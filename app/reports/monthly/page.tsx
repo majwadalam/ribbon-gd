@@ -26,7 +26,58 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import { useState } from "react"
 
-const annualData = {
+// TypeScript interfaces
+interface Metric {
+  value: string;
+  change: string;
+  trend: "up" | "down";
+  target: string;
+  progress: number;
+}
+
+interface QuarterlyData {
+  quarter: string;
+  revenue: number;
+  orders: number;
+  customers: number;
+  satisfaction: number;
+}
+
+interface Product {
+  name: string;
+  sales: number;
+  revenue: number;
+  growthRate: number;
+  color: string;
+}
+
+interface Goal {
+  goal: string;
+  achieved: number;
+  target: number;
+  status: "exceeded" | "achieved" | "partial" | "missed";
+  progress: number;
+  unit?: string;
+}
+
+interface AnnualData {
+  year: string;
+  metrics: {
+    revenue: Metric;
+    orders: Metric;
+    customers: Metric;
+    avgOrderValue: Metric;
+  };
+  quarterlyBreakdown: QuarterlyData[];
+  topProducts: Product[];
+  goals: Goal[];
+}
+
+type AnnualDataCollection = {
+  [key: string]: AnnualData;
+}
+
+const annualData: AnnualDataCollection = {
   "2023": {
     year: "2023",
     metrics: {
@@ -86,12 +137,12 @@ const annualData = {
 }
 
 export default function AnnualReports() {
-  const [selectedYear, setSelectedYear] = useState("2024")
-  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [selectedYear, setSelectedYear] = useState<string>("2024")
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
   const currentData = annualData[selectedYear]
   const { toast } = useToast()
 
-  const handleRefresh = async () => {
+  const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setIsRefreshing(false)
@@ -101,7 +152,7 @@ export default function AnnualReports() {
     })
   }
 
-  const exportReport = () => {
+  const exportReport = (): void => {
     const reportData = {
       year: currentData.year,
       metrics: currentData.metrics,
@@ -128,7 +179,7 @@ export default function AnnualReports() {
     })
   }
 
-  const exportPDF = () => {
+  const exportPDF = (): void => {
     let reportContent = `ANNUAL BUSINESS REPORT - ${currentData.year}\n`
     reportContent += "=".repeat(50) + "\n\n"
     
@@ -141,19 +192,19 @@ export default function AnnualReports() {
     
     reportContent += "QUARTERLY BREAKDOWN\n"
     reportContent += "-".repeat(20) + "\n"
-    currentData.quarterlyBreakdown.forEach(quarter => {
+    currentData.quarterlyBreakdown.forEach((quarter: QuarterlyData) => {
       reportContent += `${quarter.quarter}: Revenue $${quarter.revenue.toLocaleString()}, Orders ${quarter.orders}, Customers ${quarter.customers}\n`
     })
     
     reportContent += "\nTOP PRODUCTS\n"
     reportContent += "-".repeat(20) + "\n"
-    currentData.topProducts.forEach((product, index) => {
+    currentData.topProducts.forEach((product: Product, index: number) => {
       reportContent += `${index + 1}. ${product.name}: ${product.sales} sales, $${product.revenue.toLocaleString()} revenue (+${product.growthRate}%)\n`
     })
     
     reportContent += "\nGOAL ACHIEVEMENT\n"
     reportContent += "-".repeat(20) + "\n"
-    currentData.goals.forEach(goal => {
+    currentData.goals.forEach((goal: Goal) => {
       reportContent += `${goal.goal}: ${goal.achieved.toLocaleString()}${goal.unit ? ' ' + goal.unit : ''} / ${goal.target.toLocaleString()}${goal.unit ? ' ' + goal.unit : ''} (${goal.status})\n`
     })
     
@@ -173,7 +224,7 @@ export default function AnnualReports() {
     })
   }
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: "up" | "down") => {
     return trend === "up" ? (
       <ArrowUpRight className="h-4 w-4 text-green-500" />
     ) : (
@@ -181,17 +232,27 @@ export default function AnnualReports() {
     )
   }
 
-  const getTrendColor = (trend) => {
+  const getTrendColor = (trend: "up" | "down"): string => {
     return trend === "up" ? "text-green-600" : "text-red-600"
   }
 
-  const getGoalStatusColor = (status) => {
+  const getGoalStatusColor = (status: Goal["status"]): string => {
     switch (status) {
       case "exceeded": return "bg-green-100 text-green-800 border-green-200"
       case "achieved": return "bg-blue-100 text-blue-800 border-blue-200"
       case "partial": return "bg-yellow-100 text-yellow-800 border-yellow-200"
       default: return "bg-red-100 text-red-800 border-red-200"
     }
+  }
+
+  const formatTooltipValue = (value: any, name: string): [string, string] => {
+    if (name === 'revenue') return [`$${value.toLocaleString()}`, 'Revenue']
+    if (name === 'customers') return [value.toLocaleString(), 'Customers']
+    return [value, name]
+  }
+
+  const formatBarTooltipValue = (value: any): [string, string] => {
+    return [`$${value.toLocaleString()}`, 'Revenue']
   }
 
   return (
@@ -376,7 +437,7 @@ export default function AnnualReports() {
               <YAxis 
                 className="text-muted-foreground"
                 fontSize={12}
-                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                tickFormatter={(value: number) => `$${(value / 1000).toFixed(0)}k`}
               />
               <Tooltip 
                 contentStyle={{
@@ -384,11 +445,7 @@ export default function AnnualReports() {
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '6px'
                 }}
-                formatter={(value, name) => {
-                  if (name === 'revenue') return [`$${value.toLocaleString()}`, 'Revenue']
-                  if (name === 'customers') return [value.toLocaleString(), 'Customers']
-                  return [value, name]
-                }}
+                formatter={formatTooltipValue}
               />
               <Area 
                 type="monotone" 
@@ -425,7 +482,7 @@ export default function AnnualReports() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4 mb-4">
-              {currentData.topProducts.map((product, index) => (
+              {currentData.topProducts.map((product: Product, index: number) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-muted/10 rounded-lg">
                   <div>
                     <p className="font-medium text-sm">{product.name}</p>
@@ -453,7 +510,7 @@ export default function AnnualReports() {
                   fontSize={10}
                   width={80}
                 />
-                <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Revenue']} />
+                <Tooltip formatter={formatBarTooltipValue} />
                 <Bar dataKey="revenue" fill="hsl(var(--primary))" />
               </BarChart>
             </ResponsiveContainer>
@@ -472,7 +529,7 @@ export default function AnnualReports() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4 mb-4">
-              {currentData.goals.map((goal, index) => (
+              {currentData.goals.map((goal: Goal, index: number) => (
                 <div key={index} className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">{goal.goal}</span>

@@ -10,8 +10,67 @@ import { TrendingUp, Users, CreditCard, Activity, Calendar, Download, BarChart3,
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import { useState } from "react"
 
+// Type definitions
+interface OverviewMetric {
+  value: string;
+  change: string;
+  trend: string;
+}
+
+interface RecentSale {
+  name: string;
+  email: string;
+  amount: string;
+}
+
+interface RevenueDataPoint {
+  month: string;
+  revenue: number;
+  orders: number;
+  customers: number;
+  conversion: number;
+}
+
+interface UserAnalytics {
+  totalUsers: number;
+  newUsers: number;
+  returningUsers: number;
+  sessionDuration: string;
+  bounceRate: string;
+  conversionRate: string;
+}
+
+interface TrafficSource {
+  source: string;
+  users: number;
+  percentage: number;
+  color: string;
+}
+
+interface PerformanceMetric {
+  metric: string;
+  value: number;
+  target: number;
+  score: number;
+  color: string;
+}
+
+interface AnalyticsData {
+  overview: {
+    revenue: OverviewMetric;
+    subscriptions: OverviewMetric;
+    sales: OverviewMetric;
+    activeNow: OverviewMetric;
+  };
+  recentSales: RecentSale[];
+  revenueData: RevenueDataPoint[];
+  userAnalytics: UserAnalytics;
+  trafficSources: TrafficSource[];
+  performanceMetrics: PerformanceMetric[];
+}
+
 // Sample data for analytics
-const analyticsData = {
+const analyticsData: AnalyticsData = {
   overview: {
     revenue: { value: "$45,231.89", change: "+20.1%", trend: "up" },
     subscriptions: { value: "2,350", change: "+180.1%", trend: "up" },
@@ -57,6 +116,9 @@ const analyticsData = {
   ]
 }
 
+type ExportSection = "overview" | "revenue" | "users" | "performance" | "all";
+type ExportFormat = "csv" | "json";
+
 export default function Analytics() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const { toast } = useToast()
@@ -71,8 +133,8 @@ export default function Analytics() {
     })
   }
 
-  const exportAnalytics = (section = "all", format = "csv") => {
-    let data = {}
+  const exportAnalytics = (section: ExportSection = "all", format: ExportFormat = "csv") => {
+    let data: any = {}
     let filename = "analytics"
 
     switch (section) {
@@ -104,20 +166,23 @@ export default function Analytics() {
     }
   }
 
-  const exportToCSV = (data, filename) => {
+  const exportToCSV = (data: any, filename: string) => {
     let csvContent = ""
     
     if (Array.isArray(data)) {
-      const headers = Object.keys(data[0]).join(",")
-      csvContent = headers + "\n"
-      data.forEach(row => {
-        csvContent += Object.values(row).join(",") + "\n"
-      })
-    } else if (typeof data === 'object') {
+      if (data.length > 0) {
+        const headers = Object.keys(data[0]).join(",")
+        csvContent = headers + "\n"
+        data.forEach(row => {
+          csvContent += Object.values(row).join(",") + "\n"
+        })
+      }
+    } else if (typeof data === 'object' && data !== null) {
       csvContent = "Metric,Value,Change,Trend\n"
       Object.entries(data).forEach(([key, value]) => {
-        if (typeof value === 'object' && value.value) {
-          csvContent += `${key},${value.value},${value.change || ''},${value.trend || ''}\n`
+        if (typeof value === 'object' && value !== null && 'value' in value) {
+          const metric = value as OverviewMetric
+          csvContent += `${key},${metric.value},${metric.change || ''},${metric.trend || ''}\n`
         } else {
           csvContent += `${key},${value},,\n`
         }
@@ -140,7 +205,7 @@ export default function Analytics() {
     })
   }
 
-  const exportToJSON = (data, filename) => {
+  const exportToJSON = (data: any, filename: string) => {
     const dataStr = JSON.stringify(data, null, 2)
     const blob = new Blob([dataStr], { type: 'application/json' })
     const url = window.URL.createObjectURL(blob)
@@ -177,22 +242,6 @@ export default function Analytics() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          {/* <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => exportAnalytics("all", "csv")}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Export CSV
-          </Button> */}
-          {/* <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => exportAnalytics("all", "json")}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Export JSON
-          </Button> */}
           <V0Button prompt="Create a comprehensive analytics dashboard with charts, metrics, and reporting features" />
         </div>
       </div>
@@ -306,8 +355,8 @@ export default function Analytics() {
                         borderRadius: '6px'
                       }}
                       formatter={(value, name) => {
-                        if (name === 'revenue') return [`$${value.toLocaleString()}`, 'Revenue']
-                        return [value.toLocaleString(), name]
+                        if (name === 'revenue') return [`$${Number(value).toLocaleString()}`, 'Revenue']
+                        return [Number(value).toLocaleString(), name]
                       }}
                     />
                     <Area 
@@ -370,7 +419,7 @@ export default function Analytics() {
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [value.toLocaleString(), 'Users']} />
+                    <Tooltip formatter={(value) => [Number(value).toLocaleString(), 'Users']} />
                   </RechartsPieChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -428,9 +477,9 @@ export default function Analytics() {
                       borderRadius: '6px'
                     }}
                     formatter={(value, name) => {
-                      if (name === 'revenue') return [`$${value.toLocaleString()}`, 'Revenue']
+                      if (name === 'revenue') return [`$${Number(value).toLocaleString()}`, 'Revenue']
                       if (name === 'conversion') return [`${value}%`, 'Conversion Rate']
-                      return [value.toLocaleString(), name]
+                      return [Number(value).toLocaleString(), name]
                     }}
                   />
                   <Line 
@@ -541,7 +590,7 @@ export default function Analytics() {
                       border: '1px solid hsl(var(--border))',
                       borderRadius: '6px'
                     }}
-                    formatter={(value) => [value.toLocaleString(), 'Customers']}
+                    formatter={(value) => [Number(value).toLocaleString(), 'Customers']}
                   />
                   <Bar 
                     dataKey="customers" 

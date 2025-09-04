@@ -1,3 +1,4 @@
+// use-toast.tsx
 "use client"
 
 import * as React from "react"
@@ -12,6 +13,8 @@ type ToasterToast = {
   action?: React.ReactElement
   variant?: "default" | "destructive"
   duration?: number
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 const actionTypes = {
@@ -152,7 +155,7 @@ function toast({ ...props }: Toast) {
       ...props,
       id,
       open: true,
-      onOpenChange: (open) => {
+      onOpenChange: (open: boolean) => {
         if (!open) dismiss()
       },
     },
@@ -186,3 +189,4 @@ function useToast() {
 }
 
 export { useToast, toast }
+export type { ToasterToast }

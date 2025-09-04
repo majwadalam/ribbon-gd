@@ -23,7 +23,55 @@ import {
 } from "lucide-react"
 import { useState } from "react"
 
-const annualData = {
+// Type definitions
+interface Metric {
+  value: string;
+  change: string;
+  trend: "up" | "down";
+  target: string;
+  progress: number;
+}
+
+interface QuarterlyData {
+  quarter: string;
+  revenue: string;
+  orders: string;
+  customers: string;
+}
+
+interface TopProduct {
+  name: string;
+  sales: number;
+  revenue: string;
+  growthRate: string;
+}
+
+interface Goal {
+  goal: string;
+  achieved: string;
+  target: string;
+  status: "exceeded" | "achieved" | "partial" | "missed";
+  unit?: string;
+}
+
+interface YearData {
+  year: string;
+  metrics: {
+    revenue: Metric;
+    orders: Metric;
+    customers: Metric;
+    avgOrderValue: Metric;
+  };
+  quarterlyBreakdown: QuarterlyData[];
+  topProducts: TopProduct[];
+  goals: Goal[];
+}
+
+type AnnualData = {
+  [key: string]: YearData;
+}
+
+const annualData: AnnualData = {
   "2023": {
     year: "2023",
     metrics: {
@@ -83,7 +131,7 @@ const annualData = {
 }
 
 export default function AnnualReports() {
-  const [selectedYear, setSelectedYear] = useState("2024")
+  const [selectedYear, setSelectedYear] = useState<string>("2024")
   const currentData = annualData[selectedYear]
 
   const exportReport = () => {
@@ -122,19 +170,19 @@ export default function AnnualReports() {
     
     reportContent += "QUARTERLY BREAKDOWN\n"
     reportContent += "-".repeat(20) + "\n"
-    currentData.quarterlyBreakdown.forEach(quarter => {
+    currentData.quarterlyBreakdown.forEach((quarter: QuarterlyData) => {
       reportContent += `${quarter.quarter}: Revenue ${quarter.revenue}, Orders ${quarter.orders}, Customers ${quarter.customers}\n`
     })
     
     reportContent += "\nTOP PRODUCTS\n"
     reportContent += "-".repeat(20) + "\n"
-    currentData.topProducts.forEach((product, index) => {
+    currentData.topProducts.forEach((product: TopProduct, index: number) => {
       reportContent += `${index + 1}. ${product.name}: ${product.sales} sales, ${product.revenue} revenue (${product.growthRate})\n`
     })
     
     reportContent += "\nGOAL ACHIEVEMENT\n"
     reportContent += "-".repeat(20) + "\n"
-    currentData.goals.forEach(goal => {
+    currentData.goals.forEach((goal: Goal) => {
       reportContent += `${goal.goal}: ${goal.achieved}${goal.unit ? ' ' + goal.unit : ''} / ${goal.target}${goal.unit ? ' ' + goal.unit : ''} (${goal.status})\n`
     })
     
@@ -149,7 +197,7 @@ export default function AnnualReports() {
     document.body.removeChild(a)
   }
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: "up" | "down") => {
     return trend === "up" ? (
       <ArrowUpRight className="h-4 w-4 text-green-500" />
     ) : (
@@ -157,11 +205,11 @@ export default function AnnualReports() {
     )
   }
 
-  const getTrendColor = (trend) => {
+  const getTrendColor = (trend: "up" | "down") => {
     return trend === "up" ? "text-green-600" : "text-red-600"
   }
 
-  const getGoalStatusColor = (status) => {
+  const getGoalStatusColor = (status: Goal["status"]) => {
     switch (status) {
       case "exceeded": return "bg-green-100 text-green-800 border-green-200"
       case "achieved": return "bg-blue-100 text-blue-800 border-blue-200"
@@ -333,7 +381,7 @@ export default function AnnualReports() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {currentData.quarterlyBreakdown.map((quarter, index) => (
+            {currentData.quarterlyBreakdown.map((quarter: QuarterlyData, index: number) => (
               <div key={index} className="p-4 border rounded-lg">
                 <h4 className="font-semibold text-sm mb-2">{quarter.quarter}</h4>
                 <div className="space-y-1 text-xs">
@@ -370,7 +418,7 @@ export default function AnnualReports() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {currentData.topProducts.map((product, index) => (
+              {currentData.topProducts.map((product: TopProduct, index: number) => (
                 <div key={index} className="flex items-center justify-between p-3 bg-muted/10 rounded-lg">
                   <div>
                     <p className="font-medium text-sm">{product.name}</p>
@@ -402,7 +450,7 @@ export default function AnnualReports() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {currentData.goals.map((goal, index) => (
+              {currentData.goals.map((goal: Goal, index: number) => (
                 <div key={index} className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium">{goal.goal}</span>

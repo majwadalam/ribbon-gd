@@ -15,7 +15,66 @@ import { useToast } from "@/lib/use-toast"
 import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2, Plus, RefreshCw } from "lucide-react"
 import { useState } from "react"
 
-const initialCustomerData = [
+interface CustomerDetails {
+  address: string
+  phone: string
+  orders: number
+  totalSpent: string
+}
+
+interface Customer {
+  id: string
+  customer: string
+  email: string
+  status: string
+  amount: string
+  date: string
+  details: CustomerDetails
+}
+
+interface Product {
+  id: string
+  name: string
+  category: string
+  price: string
+  stock: number
+  status: string
+  sales: number
+}
+
+interface Order {
+  id: string
+  customer: string
+  product: string
+  amount: string
+  status: string
+  date: string
+}
+
+interface NewCustomer {
+  customer: string
+  email: string
+  phone: string
+  address: string
+  status: string
+}
+
+interface NewProduct {
+  name: string
+  category: string
+  price: string
+  stock: string
+  status: string
+}
+
+interface NewOrder {
+  customer: string
+  product: string
+  amount: string
+  status: string
+}
+
+const initialCustomerData: Customer[] = [
   {
     id: "1",
     customer: "Olivia Martin",
@@ -74,7 +133,7 @@ const initialCustomerData = [
   },
 ]
 
-const initialProductData = [
+const initialProductData: Product[] = [
   {
     id: "1",
     name: "Premium Subscription",
@@ -104,7 +163,7 @@ const initialProductData = [
   },
 ]
 
-const initialOrderData = [
+const initialOrderData: Order[] = [
   {
     id: "ORD-001",
     customer: "Olivia Martin",
@@ -132,11 +191,11 @@ const initialOrderData = [
 ]
 
 export default function Tables() {
-  const [customerData, setCustomerData] = useState(initialCustomerData)
-  const [productData, setProductData] = useState(initialProductData)
-  const [orderData, setOrderData] = useState(initialOrderData)
+  const [customerData, setCustomerData] = useState<Customer[]>(initialCustomerData)
+  const [productData, setProductData] = useState<Product[]>(initialProductData)
+  const [orderData, setOrderData] = useState<Order[]>(initialOrderData)
   
-  const [expandedRows, setExpandedRows] = useState(new Set())
+  const [expandedRows, setExpandedRows] = useState(new Set<string>())
   const [customerSearchTerm, setCustomerSearchTerm] = useState("")
   const [customerStatusFilter, setCustomerStatusFilter] = useState("all")
   
@@ -148,7 +207,7 @@ export default function Tables() {
   const [orderModalOpen, setOrderModalOpen] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   
-  const [newCustomer, setNewCustomer] = useState({
+  const [newCustomer, setNewCustomer] = useState<NewCustomer>({
     customer: "",
     email: "",
     phone: "",
@@ -156,7 +215,7 @@ export default function Tables() {
     status: "active"
   })
   
-  const [newProduct, setNewProduct] = useState({
+  const [newProduct, setNewProduct] = useState<NewProduct>({
     name: "",
     category: "",
     price: "",
@@ -164,7 +223,7 @@ export default function Tables() {
     status: "active"
   })
   
-  const [newOrder, setNewOrder] = useState({
+  const [newOrder, setNewOrder] = useState<NewOrder>({
     customer: "",
     product: "",
     amount: "",
@@ -174,7 +233,7 @@ export default function Tables() {
   const { toast } = useToast()
 
   // Export functionality
-  const exportToCSV = (data, filename) => {
+  const exportToCSV = (data: any[], filename: string) => {
     const headers = Object.keys(data[0]).filter(key => key !== 'details').join(",")
     const csvData = data.map(row => 
       Object.entries(row)
@@ -200,7 +259,7 @@ export default function Tables() {
     })
   }
 
-  const toggleRow = (id) => {
+  const toggleRow = (id: string) => {
     const newExpanded = new Set(expandedRows)
     if (newExpanded.has(id)) {
       newExpanded.delete(id)
@@ -228,7 +287,7 @@ export default function Tables() {
     item.id.toLowerCase().includes(orderSearchTerm.toLowerCase())
   )
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case "active": case "completed": return "bg-green-300 text-green-800 border-green-700"
       case "pending": return "bg-yellow-300 text-yellow-800 border-yellow-700"
@@ -247,7 +306,7 @@ export default function Tables() {
       return
     }
 
-    const customer = {
+    const customer: Customer = {
       id: (customerData.length + 1).toString(),
       customer: newCustomer.customer,
       email: newCustomer.email,
@@ -281,7 +340,7 @@ export default function Tables() {
       return
     }
 
-    const product = {
+    const product: Product = {
       id: (productData.length + 1).toString(),
       name: newProduct.name,
       category: newProduct.category,
@@ -310,7 +369,7 @@ export default function Tables() {
       return
     }
 
-    const order = {
+    const order: Order = {
       id: `ORD-${String(orderData.length + 1).padStart(3, '0')}`,
       customer: newOrder.customer,
       product: newOrder.product,
@@ -328,7 +387,7 @@ export default function Tables() {
     })
   }
 
-  const handleDeleteItem = (id, type, name) => {
+  const handleDeleteItem = (id: string, type: string, name: string) => {
     switch (type) {
       case 'customer':
         setCustomerData(customerData.filter(item => item.id !== id))
