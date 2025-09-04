@@ -7,11 +7,15 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2 } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useToast } from "@/lib/use-toast"
+import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2, Plus, RefreshCw } from "lucide-react"
 import { useState } from "react"
 
-const data = [
+const initialCustomerData = [
   {
     id: "1",
     customer: "Olivia Martin",
@@ -70,12 +74,133 @@ const data = [
   },
 ]
 
-export default function Tables() {
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
+const initialProductData = [
+  {
+    id: "1",
+    name: "Premium Subscription",
+    category: "Subscription",
+    price: "$29.99",
+    stock: 999,
+    status: "active",
+    sales: 142
+  },
+  {
+    id: "2",
+    name: "Basic Plan",
+    category: "Subscription",
+    price: "$9.99",
+    stock: 999,
+    status: "active",
+    sales: 89
+  },
+  {
+    id: "3",
+    name: "Enterprise",
+    category: "Subscription",
+    price: "$99.99",
+    stock: 999,
+    status: "active",
+    sales: 23
+  },
+]
 
-  const toggleRow = (id: string) => {
+const initialOrderData = [
+  {
+    id: "ORD-001",
+    customer: "Olivia Martin",
+    product: "Premium Subscription",
+    amount: "$29.99",
+    status: "completed",
+    date: "2024-01-15"
+  },
+  {
+    id: "ORD-002",
+    customer: "Jackson Lee",
+    product: "Basic Plan",
+    amount: "$9.99",
+    status: "pending",
+    date: "2024-01-14"
+  },
+  {
+    id: "ORD-003",
+    customer: "Isabella Nguyen",
+    product: "Enterprise",
+    amount: "$99.99",
+    status: "completed",
+    date: "2024-01-13"
+  },
+]
+
+export default function Tables() {
+  const [customerData, setCustomerData] = useState(initialCustomerData)
+  const [productData, setProductData] = useState(initialProductData)
+  const [orderData, setOrderData] = useState(initialOrderData)
+  
+  const [expandedRows, setExpandedRows] = useState(new Set())
+  const [customerSearchTerm, setCustomerSearchTerm] = useState("")
+  const [customerStatusFilter, setCustomerStatusFilter] = useState("all")
+  
+  const [productSearchTerm, setProductSearchTerm] = useState("")
+  const [orderSearchTerm, setOrderSearchTerm] = useState("")
+  
+  const [customerModalOpen, setCustomerModalOpen] = useState(false)
+  const [productModalOpen, setProductModalOpen] = useState(false)
+  const [orderModalOpen, setOrderModalOpen] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  
+  const [newCustomer, setNewCustomer] = useState({
+    customer: "",
+    email: "",
+    phone: "",
+    address: "",
+    status: "active"
+  })
+  
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    category: "",
+    price: "",
+    stock: "",
+    status: "active"
+  })
+  
+  const [newOrder, setNewOrder] = useState({
+    customer: "",
+    product: "",
+    amount: "",
+    status: "pending"
+  })
+
+  const { toast } = useToast()
+
+  // Export functionality
+  const exportToCSV = (data, filename) => {
+    const headers = Object.keys(data[0]).filter(key => key !== 'details').join(",")
+    const csvData = data.map(row => 
+      Object.entries(row)
+        .filter(([key]) => key !== 'details')
+        .map(([_, value]) => typeof value === 'object' ? JSON.stringify(value) : value)
+        .join(",")
+    ).join("\n")
+    
+    const csv = `${headers}\n${csvData}`
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.setAttribute('hidden', '')
+    a.setAttribute('href', url)
+    a.setAttribute('download', `${filename}.csv`)
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    
+    toast({
+      title: "Export Successful",
+      description: `${filename}.csv has been downloaded successfully.`,
+    })
+  }
+
+  const toggleRow = (id) => {
     const newExpanded = new Set(expandedRows)
     if (newExpanded.has(id)) {
       newExpanded.delete(id)
@@ -85,20 +210,152 @@ export default function Tables() {
     setExpandedRows(newExpanded)
   }
 
-  const filteredData = data.filter(item => {
-    const matchesSearch = item.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.email.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === "all" || item.status === statusFilter
+  const filteredCustomerData = customerData.filter(item => {
+    const matchesSearch = item.customer.toLowerCase().includes(customerSearchTerm.toLowerCase()) ||
+                         item.email.toLowerCase().includes(customerSearchTerm.toLowerCase())
+    const matchesStatus = customerStatusFilter === "all" || item.status === customerStatusFilter
     return matchesSearch && matchesStatus
   })
+  
+  const filteredProductData = productData.filter(item =>
+    item.name.toLowerCase().includes(productSearchTerm.toLowerCase()) ||
+    item.category.toLowerCase().includes(productSearchTerm.toLowerCase())
+  )
+  
+  const filteredOrderData = orderData.filter(item =>
+    item.customer.toLowerCase().includes(orderSearchTerm.toLowerCase()) ||
+    item.product.toLowerCase().includes(orderSearchTerm.toLowerCase()) ||
+    item.id.toLowerCase().includes(orderSearchTerm.toLowerCase())
+  )
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
-      case "active": return "bg-green-100 text-green-800 border-green-200"
-      case "pending": return "bg-yellow-100 text-yellow-800 border-yellow-200"
-      case "inactive": return "bg-red-100 text-red-800 border-red-200"
-      default: return "bg-gray-100 text-gray-800 border-gray-200"
+      case "active": case "completed": return "bg-green-300 text-green-800 border-green-700"
+      case "pending": return "bg-yellow-300 text-yellow-800 border-yellow-700"
+      case "inactive": return "bg-red-300 text-red-800 border-red-700"
+      default: return "bg-gray-300 text-gray-800 border-gray-700"
     }
+  }
+
+  const handleAddCustomer = () => {
+    if (!newCustomer.customer || !newCustomer.email) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in customer name and email.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    const customer = {
+      id: (customerData.length + 1).toString(),
+      customer: newCustomer.customer,
+      email: newCustomer.email,
+      status: newCustomer.status,
+      amount: "$0.00",
+      date: new Date().toISOString().split('T')[0],
+      details: {
+        address: newCustomer.address,
+        phone: newCustomer.phone,
+        orders: 0,
+        totalSpent: "$0.00"
+      }
+    }
+    setCustomerData([...customerData, customer])
+    setNewCustomer({ customer: "", email: "", phone: "", address: "", status: "active" })
+    setCustomerModalOpen(false)
+    
+    toast({
+      title: "Customer Added",
+      description: `${newCustomer.customer} has been added successfully.`,
+    })
+  }
+
+  const handleAddProduct = () => {
+    if (!newProduct.name || !newProduct.price) {
+      toast({
+        title: "Missing Information", 
+        description: "Please fill in product name and price.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    const product = {
+      id: (productData.length + 1).toString(),
+      name: newProduct.name,
+      category: newProduct.category,
+      price: newProduct.price,
+      stock: parseInt(newProduct.stock) || 0,
+      status: newProduct.status,
+      sales: 0
+    }
+    setProductData([...productData, product])
+    setNewProduct({ name: "", category: "", price: "", stock: "", status: "active" })
+    setProductModalOpen(false)
+    
+    toast({
+      title: "Product Added",
+      description: `${newProduct.name} has been added to the catalog.`,
+    })
+  }
+
+  const handleAddOrder = () => {
+    if (!newOrder.customer || !newOrder.product || !newOrder.amount) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all order details.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    const order = {
+      id: `ORD-${String(orderData.length + 1).padStart(3, '0')}`,
+      customer: newOrder.customer,
+      product: newOrder.product,
+      amount: newOrder.amount,
+      status: newOrder.status,
+      date: new Date().toISOString().split('T')[0]
+    }
+    setOrderData([...orderData, order])
+    setNewOrder({ customer: "", product: "", amount: "", status: "pending" })
+    setOrderModalOpen(false)
+    
+    toast({
+      title: "Order Created",
+      description: `Order ${order.id} has been created successfully.`,
+    })
+  }
+
+  const handleDeleteItem = (id, type, name) => {
+    switch (type) {
+      case 'customer':
+        setCustomerData(customerData.filter(item => item.id !== id))
+        break
+      case 'product':
+        setProductData(productData.filter(item => item.id !== id))
+        break
+      case 'order':
+        setOrderData(orderData.filter(item => item.id !== id))
+        break
+    }
+    
+    toast({
+      title: "Item Deleted",
+      description: `${name} has been removed successfully.`,
+      variant: "destructive"
+    })
+  }
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setIsRefreshing(false)
+    toast({
+      title: "Tables Refreshed",
+      description: "All table data has been refreshed.",
+    })
   }
 
   return (
@@ -110,9 +367,21 @@ export default function Tables() {
             Advanced tables with collapsible rows, filtering, and sorting.
           </p>
         </div>
-        <V0Button prompt="Create an advanced data table with collapsible rows, search, filters, and actions" />
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <V0Button prompt="Create an advanced data table with collapsible rows, search, filters, and actions" />
+        </div>
       </div>
 
+      {/* Customer Table */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -123,13 +392,90 @@ export default function Tables() {
               </CardDescription>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => exportToCSV(customerData, 'customers')}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
-              <Button size="sm">
-                Add Customer
-              </Button>
+              <Dialog open={customerModalOpen} onOpenChange={setCustomerModalOpen}>
+                <DialogTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Customer
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Customer</DialogTitle>
+                    <DialogDescription>
+                      Enter the customer details below.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="customer">Customer Name *</Label>
+                        <Input
+                          id="customer"
+                          value={newCustomer.customer}
+                          onChange={(e) => setNewCustomer({...newCustomer, customer: e.target.value})}
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={newCustomer.email}
+                          onChange={(e) => setNewCustomer({...newCustomer, email: e.target.value})}
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        value={newCustomer.phone}
+                        onChange={(e) => setNewCustomer({...newCustomer, phone: e.target.value})}
+                        placeholder="+1 (555) 123-4567"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="address">Address</Label>
+                      <Textarea
+                        id="address"
+                        value={newCustomer.address}
+                        onChange={(e) => setNewCustomer({...newCustomer, address: e.target.value})}
+                        placeholder="123 Main St, City, State"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="status">Status</Label>
+                      <Select value={newCustomer.status} onValueChange={(value) => setNewCustomer({...newCustomer, status: value})}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="inactive">Inactive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setCustomerModalOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleAddCustomer}>Add Customer</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </CardHeader>
@@ -140,12 +486,12 @@ export default function Tables() {
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input 
                   placeholder="Search customers..." 
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={customerSearchTerm}
+                  onChange={(e) => setCustomerSearchTerm(e.target.value)}
                   className="pl-10 w-64"
                 />
               </div>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select value={customerStatusFilter} onValueChange={setCustomerStatusFilter}>
                 <SelectTrigger className="w-32">
                   <Filter className="h-4 w-4 mr-2" />
                   <SelectValue />
@@ -159,7 +505,7 @@ export default function Tables() {
               </Select>
             </div>
             <p className="text-sm text-muted-foreground">
-              {filteredData.length} of {data.length} customers
+              {filteredCustomerData.length} of {customerData.length} customers
             </p>
           </div>
 
@@ -177,7 +523,7 @@ export default function Tables() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredData.map((item) => (
+                {filteredCustomerData.map((item) => (
                   <Collapsible key={item.id} asChild>
                     <>
                       <TableRow className="cursor-pointer hover:bg-muted/50">
@@ -219,13 +565,25 @@ export default function Tables() {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <Button variant="ghost" size="sm">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => toast({ title: "View Customer", description: `Viewing ${item.customer}` })}
+                            >
                               <Eye className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="sm">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => toast({ title: "Edit Customer", description: `Edit ${item.customer}` })}
+                            >
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="sm">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => handleDeleteItem(item.id, 'customer', item.customer)}
+                            >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -260,6 +618,346 @@ export default function Tables() {
                       </CollapsibleContent>
                     </>
                   </Collapsible>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Products Table */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Product Catalog</CardTitle>
+              <CardDescription>
+                Manage your products and inventory
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => exportToCSV(productData, 'products')}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+              <Dialog open={productModalOpen} onOpenChange={setProductModalOpen}>
+                <DialogTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Product
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Product</DialogTitle>
+                    <DialogDescription>
+                      Enter the product details below.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Product Name *</Label>
+                        <Input
+                          id="name"
+                          value={newProduct.name}
+                          onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
+                          placeholder="Premium Plan"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="category">Category</Label>
+                        <Input
+                          id="category"
+                          value={newProduct.category}
+                          onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
+                          placeholder="Subscription"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="price">Price *</Label>
+                        <Input
+                          id="price"
+                          placeholder="$29.99"
+                          value={newProduct.price}
+                          onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="stock">Stock</Label>
+                        <Input
+                          id="stock"
+                          type="number"
+                          value={newProduct.stock}
+                          onChange={(e) => setNewProduct({...newProduct, stock: e.target.value})}
+                          placeholder="100"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="status">Status</Label>
+                      <Select value={newProduct.status} onValueChange={(value) => setNewProduct({...newProduct, status: value})}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="inactive">Inactive</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setProductModalOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleAddProduct}>Add Product</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input 
+                placeholder="Search products..." 
+                value={productSearchTerm}
+                onChange={(e) => setProductSearchTerm(e.target.value)}
+                className="pl-10 w-64"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {filteredProductData.length} of {productData.length} products
+            </p>
+          </div>
+
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Stock</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Sales</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredProductData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-medium">{item.name}</TableCell>
+                    <TableCell>{item.category}</TableCell>
+                    <TableCell className="font-mono">{item.price}</TableCell>
+                    <TableCell>{item.stock}</TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant="outline" 
+                        className={getStatusColor(item.status)}
+                      >
+                        {item.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{item.sales}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => toast({ title: "View Product", description: `Viewing ${item.name}` })}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => toast({ title: "Edit Product", description: `Edit ${item.name}` })}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleDeleteItem(item.id, 'product', item.name)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Orders Table */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Order Management</CardTitle>
+              <CardDescription>
+                Track and manage customer orders
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => exportToCSV(orderData, 'orders')}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+              <Dialog open={orderModalOpen} onOpenChange={setOrderModalOpen}>
+                <DialogTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Order
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Order</DialogTitle>
+                    <DialogDescription>
+                      Enter the order details below.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="orderCustomer">Customer Name *</Label>
+                      <Input
+                        id="orderCustomer"
+                        value={newOrder.customer}
+                        onChange={(e) => setNewOrder({...newOrder, customer: e.target.value})}
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="orderProduct">Product *</Label>
+                      <Input
+                        id="orderProduct"
+                        value={newOrder.product}
+                        onChange={(e) => setNewOrder({...newOrder, product: e.target.value})}
+                        placeholder="Premium Subscription"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="orderAmount">Amount *</Label>
+                      <Input
+                        id="orderAmount"
+                        placeholder="$29.99"
+                        value={newOrder.amount}
+                        onChange={(e) => setNewOrder({...newOrder, amount: e.target.value})}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="orderStatus">Status</Label>
+                      <Select value={newOrder.status} onValueChange={(value) => setNewOrder({...newOrder, status: value})}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="completed">Completed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setOrderModalOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleAddOrder}>Add Order</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input 
+                placeholder="Search orders..." 
+                value={orderSearchTerm}
+                onChange={(e) => setOrderSearchTerm(e.target.value)}
+                className="pl-10 w-64"
+              />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {filteredOrderData.length} of {orderData.length} orders
+            </p>
+          </div>
+
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Order ID</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead>Product</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredOrderData.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="font-mono">{item.id}</TableCell>
+                    <TableCell className="font-medium">{item.customer}</TableCell>
+                    <TableCell>{item.product}</TableCell>
+                    <TableCell className="font-mono">{item.amount}</TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant="outline" 
+                        className={getStatusColor(item.status)}
+                      >
+                        {item.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">{item.date}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => toast({ title: "View Order", description: `Viewing order ${item.id}` })}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => toast({ title: "Edit Order", description: `Edit order ${item.id}` })}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleDeleteItem(item.id, 'order', `Order ${item.id}`)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
                 ))}
               </TableBody>
             </Table>

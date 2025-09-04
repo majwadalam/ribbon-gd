@@ -1,9 +1,12 @@
+"use client"
+
 import { V0Button } from "@/components/v0-button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import { useToast } from "@/lib/use-toast"
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -16,10 +19,59 @@ import {
   Calendar,
   MapPin,
   Clock,
-  Star
+  Star,
+  Download,
+  RefreshCw
 } from "lucide-react"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts'
+import { useState } from "react"
+
+const performanceData = [
+  { name: 'Jan', performance: 85, uptime: 99.9 },
+  { name: 'Feb', performance: 88, uptime: 99.8 },
+  { name: 'Mar', performance: 92, uptime: 99.9 },
+  { name: 'Apr', performance: 87, uptime: 99.7 },
+  { name: 'May', performance: 91, uptime: 99.9 },
+  { name: 'Jun', performance: 94, uptime: 99.8 }
+]
+
+const geographicData = [
+  { name: 'United States', value: 1234, color: '#0088FE' },
+  { name: 'United Kingdom', value: 567, color: '#00C49F' },
+  { name: 'Germany', value: 345, color: '#FFBB28' },
+  { name: 'France', value: 234, color: '#FF8042' },
+  { name: 'Others', value: 456, color: '#8884D8' }
+]
+
+const responseTimeData = [
+  { endpoint: 'GET /api/users', time: 234, efficiency: 85 },
+  { endpoint: 'POST /api/orders', time: 456, efficiency: 65 },
+  { endpoint: 'GET /api/products', time: 123, efficiency: 92 },
+  { endpoint: 'PUT /api/profile', time: 298, efficiency: 78 },
+  { endpoint: 'DELETE /api/items', time: 167, efficiency: 88 }
+]
 
 export default function DashboardAlt() {
+  const { toast } = useToast()
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setIsRefreshing(false)
+    toast({
+      title: "Data Refreshed",
+      description: "Alternative dashboard metrics have been updated.",
+    })
+  }
+
+  const handleQuickAction = (action: string) => {
+    toast({
+      title: `${action} Initiated`,
+      description: `${action} process has been started successfully.`,
+    })
+  }
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -29,7 +81,18 @@ export default function DashboardAlt() {
             Alternative dashboard layout with enhanced visualizations and insights.
           </p>
         </div>
-        <V0Button prompt="Create an alternative dashboard layout with different card arrangements, progress bars, and enhanced metrics" />
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <V0Button prompt="Create an alternative dashboard layout with different card arrangements, progress bars, and enhanced metrics" />
+        </div>
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">
@@ -40,80 +103,64 @@ export default function DashboardAlt() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Top Stats Row */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="relative overflow-hidden">
-              <div className="absolute right-0 top-0 h-full w-2 bg-gradient-to-b from-green-400 to-green-600" />
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Monthly Revenue</p>
-                    <p className="text-3xl font-bold">$54,239</p>
-                    <div className="flex items-center text-sm text-green-600">
-                      <ArrowUpRight className="h-4 w-4 mr-1" />
-                      <span>+12.5% vs last month</span>
-                    </div>
-                  </div>
-                  <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                    <DollarSign className="h-6 w-6 text-green-600" />
-                  </div>
+          {/* Updated Top Stats Row - Similar to Main Dashboard */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="card-hover">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">$54,239</div>
+                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-500" />
+                  <span className="text-green-500">+12.5%</span>
+                  <span>vs last month</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden">
-              <div className="absolute right-0 top-0 h-full w-2 bg-gradient-to-b from-blue-400 to-blue-600" />
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Active Users</p>
-                    <p className="text-3xl font-bold">3,247</p>
-                    <div className="flex items-center text-sm text-blue-600">
-                      <ArrowUpRight className="h-4 w-4 mr-1" />
-                      <span>+8.1% vs last week</span>
-                    </div>
-                  </div>
-                  <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                    <Users className="h-6 w-6 text-blue-600" />
-                  </div>
+            <Card className="card-hover">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">3,247</div>
+                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-500" />
+                  <span className="text-green-500">+8.1%</span>
+                  <span>vs last week</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden">
-              <div className="absolute right-0 top-0 h-full w-2 bg-gradient-to-b from-purple-400 to-purple-600" />
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Conversion Rate</p>
-                    <p className="text-3xl font-bold">12.8%</p>
-                    <div className="flex items-center text-sm text-red-600">
-                      <ArrowDownRight className="h-4 w-4 mr-1" />
-                      <span>-2.1% vs last month</span>
-                    </div>
-                  </div>
-                  <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
-                    <Activity className="h-6 w-6 text-purple-600" />
-                  </div>
+            <Card className="card-hover">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">12.8%</div>
+                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <TrendingDown className="h-3 w-3 text-red-500" />
+                  <span className="text-red-500">-2.1%</span>
+                  <span>vs last month</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden">
-              <div className="absolute right-0 top-0 h-full w-2 bg-gradient-to-b from-orange-400 to-orange-600" />
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">Avg. Order Value</p>
-                    <p className="text-3xl font-bold">$127</p>
-                    <div className="flex items-center text-sm text-orange-600">
-                      <ArrowUpRight className="h-4 w-4 mr-1" />
-                      <span>+5.4% vs last month</span>
-                    </div>
-                  </div>
-                  <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
-                    <CreditCard className="h-6 w-6 text-orange-600" />
-                  </div>
+            <Card className="card-hover">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Avg. Order Value</CardTitle>
+                <CreditCard className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">$127</div>
+                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <TrendingUp className="h-3 w-3 text-green-500" />
+                  <span className="text-green-500">+5.4%</span>
+                  <span>vs last month</span>
                 </div>
               </CardContent>
             </Card>
@@ -200,19 +247,35 @@ export default function DashboardAlt() {
                 <CardTitle className="text-base">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full justify-start" variant="outline">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => handleQuickAction("Schedule Meeting")}
+                >
                   <Calendar className="mr-2 h-4 w-4" />
                   Schedule Meeting
                 </Button>
-                <Button className="w-full justify-start" variant="outline">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => handleQuickAction("Invite Team Member")}
+                >
                   <Users className="mr-2 h-4 w-4" />
                   Invite Team Member
                 </Button>
-                <Button className="w-full justify-start" variant="outline">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => handleQuickAction("Process Refund")}
+                >
                   <CreditCard className="mr-2 h-4 w-4" />
                   Process Refund
                 </Button>
-                <Button className="w-full justify-start" variant="outline">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => handleQuickAction("Generate Report")}
+                >
                   <Activity className="mr-2 h-4 w-4" />
                   Generate Report
                 </Button>
@@ -230,9 +293,34 @@ export default function DashboardAlt() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[400px] flex items-center justify-center text-muted-foreground bg-muted/10 rounded-lg">
-                  Advanced Revenue Chart Placeholder (Recharts)
-                </div>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={performanceData}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis 
+                      dataKey="name" 
+                      className="text-muted-foreground"
+                      fontSize={12}
+                    />
+                    <YAxis 
+                      className="text-muted-foreground"
+                      fontSize={12}
+                    />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'hsl(var(--background))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '6px'
+                      }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="performance" 
+                      stroke="hsl(var(--primary))" 
+                      strokeWidth={2}
+                      dot={{ fill: 'hsl(var(--primary))' }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
 
@@ -299,9 +387,31 @@ export default function DashboardAlt() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                  Performance Chart Placeholder
-                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={responseTimeData}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis 
+                      dataKey="endpoint" 
+                      className="text-muted-foreground"
+                      fontSize={10}
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
+                    <YAxis 
+                      className="text-muted-foreground"
+                      fontSize={12}
+                    />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'hsl(var(--background))',
+                        border: '1px solid hsl(var(--border))',
+                        borderRadius: '6px'
+                      }}
+                    />
+                    <Bar dataKey="time" fill="hsl(var(--primary))" />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
 
@@ -314,27 +424,15 @@ export default function DashboardAlt() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">GET /api/users</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={85} className="w-20 h-2" />
-                      <span className="text-sm font-mono">234ms</span>
+                  {responseTimeData.map((item, index) => (
+                    <div key={index} className="flex items-center justify-between">
+                      <span className="text-sm">{item.endpoint}</span>
+                      <div className="flex items-center gap-2">
+                        <Progress value={item.efficiency} className="w-20 h-2" />
+                        <span className="text-sm font-mono">{item.time}ms</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">POST /api/orders</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={65} className="w-20 h-2" />
-                      <span className="text-sm font-mono">456ms</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">GET /api/products</span>
-                    <div className="flex items-center gap-2">
-                      <Progress value={92} className="w-20 h-2" />
-                      <span className="text-sm font-mono">123ms</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -351,9 +449,24 @@ export default function DashboardAlt() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                  World Map Placeholder
-                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={geographicData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {geographicData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
 
@@ -363,36 +476,23 @@ export default function DashboardAlt() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">United States</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Progress value={78} className="w-20 h-2" />
-                      <span className="text-sm font-medium">1,234</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">United Kingdom</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Progress value={45} className="w-20 h-2" />
-                      <span className="text-sm font-medium">567</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">Germany</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Progress value={32} className="w-20 h-2" />
-                      <span className="text-sm font-medium">345</span>
-                    </div>
-                  </div>
+                  {geographicData.map((region, index) => {
+                    const total = geographicData.reduce((sum, item) => sum + item.value, 0)
+                    const percentage = Math.round((region.value / total) * 100)
+                    
+                    return (
+                      <div key={index} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm">{region.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Progress value={percentage} className="w-20 h-2" />
+                          <span className="text-sm font-medium">{region.value.toLocaleString()}</span>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </CardContent>
             </Card>

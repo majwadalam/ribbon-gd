@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
+import { useToast } from "@/lib/use-toast"
 import { 
   Users, 
   Plus, 
@@ -35,11 +36,14 @@ import {
   User,
   Settings,
   Trash2,
-  UserX
+  UserX,
+  Download,
+  RefreshCw
 } from "lucide-react"
 import { useState } from "react"
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 
-const teamMembers = [
+const initialTeamMembers = [
   {
     id: "1",
     name: "Sarah Johnson",
@@ -107,8 +111,18 @@ const roles = [
 ]
 
 export default function Team() {
+  const [teamMembers, setTeamMembers] = useState(initialTeamMembers)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedRole, setSelectedRole] = useState("all")
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [newMember, setNewMember] = useState({
+    name: "",
+    email: "", 
+    role: "viewer"
+  })
+  
+  const { toast } = useToast()
 
   const getRoleInfo = (role: string) => {
     return roles.find(r => r.value === role) || roles[2]
@@ -130,6 +144,107 @@ export default function Team() {
     return matchesSearch && matchesRole
   })
 
+  const handleInviteMember = () => {
+    if (!newMember.name || !newMember.email) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      })
+      return
+    }
+
+    const member = {
+      id: (teamMembers.length + 1).toString(),
+      name: newMember.name,
+      email: newMember.email,
+      role: newMember.role,
+      avatar: "",
+      status: "invited",
+      joinedDate: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+      lastActive: "Never"
+    }
+
+    setTeamMembers([...teamMembers, member])
+    setNewMember({ name: "", email: "", role: "viewer" })
+    setInviteDialogOpen(false)
+    
+    toast({
+      title: "Invitation Sent",
+      description: `Successfully invited ${newMember.name} to join the team.`,
+    })
+  }
+
+  const handleRemoveMember = (memberId: string, memberName: string) => {
+    setTeamMembers(teamMembers.filter(member => member.id !== memberId))
+    toast({
+      title: "Member Removed",
+      description: `${memberName} has been removed from the team.`,
+    })
+  }
+
+  const handleChangeRole = (memberId: string, newRole: string, memberName: string) => {
+    setTeamMembers(teamMembers.map(member => 
+      member.id === memberId ? { ...member, role: newRole } : member
+    ))
+    toast({
+      title: "Role Updated",
+      description: `${memberName}'s role has been changed to ${getRoleInfo(newRole).label}.`,
+    })
+  }
+
+  const handleSuspendUser = (memberId: string, memberName: string) => {
+    setTeamMembers(teamMembers.map(member => 
+      member.id === memberId ? { ...member, status: "inactive" } : member
+    ))
+    toast({
+      title: "User Suspended",
+      description: `${memberName} has been suspended.`,
+      variant: "destructive"
+    })
+  }
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setIsRefreshing(false)
+    toast({
+      title: "Team Data Refreshed",
+      description: "Team member information has been updated.",
+    })
+  }
+
+  const exportTeamData = () => {
+    const csvData = teamMembers.map(member => 
+      `${member.name},${member.email},${member.role},${member.status},${member.joinedDate},${member.lastActive}`
+    ).join('\n')
+    
+    const blob = new Blob([`Name,Email,Role,Status,Joined Date,Last Active\n${csvData}`], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'team-members.csv'
+    a.click()
+    
+    toast({
+      title: "Export Successful",
+      description: "Team data has been exported to CSV.",
+    })
+  }
+
+  // Data for charts
+  const roleDistribution = roles.map(role => ({
+    name: role.label,
+    value: teamMembers.filter(member => member.role === role.value).length,
+    color: role.value === 'admin' ? '#EAB308' : role.value === 'editor' ? '#3B82F6' : '#6B7280'
+  }))
+
+  const statusData = [
+    { name: 'Active', value: teamMembers.filter(m => m.status === 'active').length, color: '#10B981' },
+    { name: 'Invited', value: teamMembers.filter(m => m.status === 'invited').length, color: '#F59E0B' },
+    { name: 'Inactive', value: teamMembers.filter(m => m.status === 'inactive').length, color: '#6B7280' }
+  ]
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -139,7 +254,22 @@ export default function Team() {
             Manage your team members, roles, and permissions.
           </p>
         </div>
-        <V0Button prompt="Create a comprehensive team management interface with user roles, permissions, and member cards" />
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
+          <Button variant="outline" size="sm" onClick={exportTeamData}>
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+          <V0Button prompt="Create a comprehensive team management interface with user roles, permissions, and member cards" />
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
@@ -149,7 +279,7 @@ export default function Team() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4</div>
+            <div className="text-2xl font-bold">{teamMembers.length}</div>
             <p className="text-xs text-muted-foreground">
               +1 from last month
             </p>
@@ -162,9 +292,11 @@ export default function Team() {
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2</div>
+            <div className="text-2xl font-bold">
+              {teamMembers.filter(m => m.status === 'active').length}
+            </div>
             <p className="text-xs text-muted-foreground">
-              67% of total members
+              {Math.round((teamMembers.filter(m => m.status === 'active').length / teamMembers.length) * 100)}% of total members
             </p>
           </CardContent>
         </Card>
@@ -175,7 +307,9 @@ export default function Team() {
             <Mail className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1</div>
+            <div className="text-2xl font-bold">
+              {teamMembers.filter(m => m.status === 'invited').length}
+            </div>
             <p className="text-xs text-muted-foreground">
               Waiting for response
             </p>
@@ -188,10 +322,60 @@ export default function Team() {
             <Crown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1</div>
+            <div className="text-2xl font-bold">
+              {teamMembers.filter(m => m.role === 'admin').length}
+            </div>
             <p className="text-xs text-muted-foreground">
               Full access members
             </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Role Distribution</CardTitle>
+            <CardDescription>Team members by role</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={roleDistribution}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={60}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                >
+                  {roleDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Member Status</CardTitle>
+            <CardDescription>Team member activity status</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={statusData}>
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis dataKey="name" className="text-muted-foreground" fontSize={12} />
+                <YAxis className="text-muted-foreground" fontSize={12} />
+                <Tooltip />
+                <Bar dataKey="value" fill="hsl(var(--primary))" />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
@@ -205,7 +389,7 @@ export default function Team() {
                 Manage your team members and their permissions
               </CardDescription>
             </div>
-            <Dialog>
+            <Dialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
@@ -221,16 +405,27 @@ export default function Team() {
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
+                    <Input
+                      id="name"
+                      value={newMember.name}
+                      onChange={(e) => setNewMember({...newMember, name: e.target.value})}
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
                       type="email"
+                      value={newMember.email}
+                      onChange={(e) => setNewMember({...newMember, email: e.target.value})}
                       placeholder="colleague@example.com"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="role">Role</Label>
-                    <Select defaultValue="viewer">
+                    <Select value={newMember.role} onValueChange={(value) => setNewMember({...newMember, role: value})}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -253,8 +448,10 @@ export default function Team() {
                   </div>
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline">Cancel</Button>
-                  <Button>Send Invitation</Button>
+                  <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleInviteMember}>Send Invitation</Button>
                 </div>
               </DialogContent>
             </Dialog>
@@ -338,20 +535,28 @@ export default function Team() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => {
+                            toast({
+                              title: "Email Sent",
+                              description: `Email sent to ${member.name}`,
+                            })
+                          }}>
                             <Mail className="mr-2 h-4 w-4" />
                             Send Email
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleChangeRole(member.id, member.role === 'viewer' ? 'editor' : 'viewer', member.name)}>
                             <Settings className="mr-2 h-4 w-4" />
                             Change Role
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSuspendUser(member.id, member.name)}>
                             <UserX className="mr-2 h-4 w-4" />
                             Suspend User
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
+                          <DropdownMenuItem 
+                            className="text-destructive"
+                            onClick={() => handleRemoveMember(member.id, member.name)}
+                          >
                             <Trash2 className="mr-2 h-4 w-4" />
                             Remove User
                           </DropdownMenuItem>
