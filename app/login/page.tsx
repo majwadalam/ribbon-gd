@@ -121,7 +121,7 @@ export default function Login() {
 
         <div className="flex justify-center">
           <V0Button 
-            prompt="Create a modern login form with social auth, validation, and clean design"
+            componentName="login"
             className="text-xs"
           />
         </div>

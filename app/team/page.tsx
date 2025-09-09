@@ -268,7 +268,7 @@ export default function Team() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
-          <V0Button prompt="Create a comprehensive team management interface with user roles, permissions, and member cards" />
+          <V0Button componentName="team" />
         </div>
       </div>
 

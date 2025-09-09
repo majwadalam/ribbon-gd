@@ -242,7 +242,7 @@ export default function Analytics() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button prompt="Create a comprehensive analytics dashboard with charts, metrics, and reporting features" />
+          <V0Button componentName="analytics" />
         </div>
       </div>
 

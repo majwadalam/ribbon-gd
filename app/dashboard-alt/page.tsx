@@ -91,7 +91,7 @@ export default function DashboardAlt() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button prompt="Create an alternative dashboard layout with different card arrangements, progress bars, and enhanced metrics" />
+          <V0Button componentName="dashboard-alt" />
         </div>
       </div>
 

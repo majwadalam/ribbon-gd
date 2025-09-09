@@ -75,7 +75,7 @@ export default function Dashboard() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
-          <V0Button prompt="Create a Stripe-inspired dashboard with analytics cards, charts, and metrics" />
+          <V0Button componentName="dashboard" />
         </div>
       </div>
 

@@ -239,7 +239,7 @@ export default function SignUp() {
 
         <div className="flex justify-center">
           <V0Button 
-            prompt="Create a multi-step signup form with progress indicator, validation, and modern design"
+            componentName="signup"
             className="text-xs"
           />
         </div>

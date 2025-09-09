@@ -436,7 +436,7 @@ export default function Tables() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button prompt="Create an advanced data table with collapsible rows, search, filters, and actions" />
+          <V0Button componentName="tables" />
         </div>
       </div>
 

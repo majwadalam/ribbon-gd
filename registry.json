@@ -1,0 +1,460 @@
+{
+  "$schema": "https://shadcn.com/registry/schema.json",
+  "name": "ribbon-gd",
+  "description": "A modern dashboard template with shadcn/ui components",
+  "version": "0.1.0",
+  "style": "default",
+  "tailwind": {
+    "config": {
+      "theme": {
+        "extend": {}
+      }
+    }
+  },
+  "items": [
+    {
+      "name": "avatar",
+      "type": "ui",
+      "files": [
+        {
+          "name": "avatar.tsx",
+          "content": "components/ui/avatar.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-avatar"],
+      "devDependencies": []
+    },
+    {
+      "name": "badge",
+      "type": "ui",
+      "files": [
+        {
+          "name": "badge.tsx",
+          "content": "components/ui/badge.tsx"
+        }
+      ],
+      "dependencies": ["class-variance-authority"],
+      "devDependencies": []
+    },
+    {
+      "name": "breadcrumb",
+      "type": "ui",
+      "files": [
+        {
+          "name": "breadcrumb.tsx",
+          "content": "components/ui/breadcrumb.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-slot"],
+      "devDependencies": []
+    },
+    {
+      "name": "button",
+      "type": "ui",
+      "files": [
+        {
+          "name": "button.tsx",
+          "content": "components/ui/button.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+      "devDependencies": []
+    },
+    {
+      "name": "calendar",
+      "type": "ui",
+      "files": [
+        {
+          "name": "calendar.tsx",
+          "content": "components/ui/calendar.tsx"
+        }
+      ],
+      "dependencies": ["react-day-picker", "date-fns"],
+      "devDependencies": []
+    },
+    {
+      "name": "card",
+      "type": "ui",
+      "files": [
+        {
+          "name": "card.tsx",
+          "content": "components/ui/card.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "chart",
+      "type": "ui",
+      "files": [
+        {
+          "name": "chart.tsx",
+          "content": "components/ui/chart.tsx"
+        }
+      ],
+      "dependencies": ["recharts"],
+      "devDependencies": []
+    },
+    {
+      "name": "checkbox",
+      "type": "ui",
+      "files": [
+        {
+          "name": "checkbox.tsx",
+          "content": "components/ui/checkbox.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-checkbox"],
+      "devDependencies": []
+    },
+    {
+      "name": "collapsible",
+      "type": "ui",
+      "files": [
+        {
+          "name": "collapsible.tsx",
+          "content": "components/ui/collapsible.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-collapsible"],
+      "devDependencies": []
+    },
+    {
+      "name": "command",
+      "type": "ui",
+      "files": [
+        {
+          "name": "command.tsx",
+          "content": "components/ui/command.tsx"
+        }
+      ],
+      "dependencies": ["cmdk"],
+      "devDependencies": []
+    },
+    {
+      "name": "dialog",
+      "type": "ui",
+      "files": [
+        {
+          "name": "dialog.tsx",
+          "content": "components/ui/dialog.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-dialog"],
+      "devDependencies": []
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "ui",
+      "files": [
+        {
+          "name": "dropdown-menu.tsx",
+          "content": "components/ui/dropdown-menu.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-dropdown-menu"],
+      "devDependencies": []
+    },
+    {
+      "name": "form",
+      "type": "ui",
+      "files": [
+        {
+          "name": "form.tsx",
+          "content": "components/ui/form.tsx"
+        }
+      ],
+      "dependencies": ["react-hook-form", "@hookform/resolvers", "@radix-ui/react-label"],
+      "devDependencies": []
+    },
+    {
+      "name": "input",
+      "type": "ui",
+      "files": [
+        {
+          "name": "input.tsx",
+          "content": "components/ui/input.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "label",
+      "type": "ui",
+      "files": [
+        {
+          "name": "label.tsx",
+          "content": "components/ui/label.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-label"],
+      "devDependencies": []
+    },
+    {
+      "name": "navigation-menu",
+      "type": "ui",
+      "files": [
+        {
+          "name": "navigation-menu.tsx",
+          "content": "components/ui/navigation-menu.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-navigation-menu"],
+      "devDependencies": []
+    },
+    {
+      "name": "popover",
+      "type": "ui",
+      "files": [
+        {
+          "name": "popover.tsx",
+          "content": "components/ui/popover.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-popover"],
+      "devDependencies": []
+    },
+    {
+      "name": "progress",
+      "type": "ui",
+      "files": [
+        {
+          "name": "progress.tsx",
+          "content": "components/ui/progress.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-progress"],
+      "devDependencies": []
+    },
+    {
+      "name": "scroll-area",
+      "type": "ui",
+      "files": [
+        {
+          "name": "scroll-area.tsx",
+          "content": "components/ui/scroll-area.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-scroll-area"],
+      "devDependencies": []
+    },
+    {
+      "name": "select",
+      "type": "ui",
+      "files": [
+        {
+          "name": "select.tsx",
+          "content": "components/ui/select.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-select"],
+      "devDependencies": []
+    },
+    {
+      "name": "separator",
+      "type": "ui",
+      "files": [
+        {
+          "name": "separator.tsx",
+          "content": "components/ui/separator.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-separator"],
+      "devDependencies": []
+    },
+    {
+      "name": "sheet",
+      "type": "ui",
+      "files": [
+        {
+          "name": "sheet.tsx",
+          "content": "components/ui/sheet.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-dialog"],
+      "devDependencies": []
+    },
+    {
+      "name": "sidebar",
+      "type": "ui",
+      "files": [
+        {
+          "name": "sidebar.tsx",
+          "content": "components/ui/sidebar.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-slot"],
+      "devDependencies": []
+    },
+    {
+      "name": "skeleton",
+      "type": "ui",
+      "files": [
+        {
+          "name": "skeleton.tsx",
+          "content": "components/ui/skeleton.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "switch",
+      "type": "ui",
+      "files": [
+        {
+          "name": "switch.tsx",
+          "content": "components/ui/switch.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-switch"],
+      "devDependencies": []
+    },
+    {
+      "name": "table",
+      "type": "ui",
+      "files": [
+        {
+          "name": "table.tsx",
+          "content": "components/ui/table.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "tabs",
+      "type": "ui",
+      "files": [
+        {
+          "name": "tabs.tsx",
+          "content": "components/ui/tabs.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-tabs"],
+      "devDependencies": []
+    },
+    {
+      "name": "textarea",
+      "type": "ui",
+      "files": [
+        {
+          "name": "textarea.tsx",
+          "content": "components/ui/textarea.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "toaster",
+      "type": "ui",
+      "files": [
+        {
+          "name": "toaser.tsx",
+          "content": "components/ui/toaser.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "tooltip",
+      "type": "ui",
+      "files": [
+        {
+          "name": "tooltip.tsx",
+          "content": "components/ui/tooltip.tsx"
+        }
+      ],
+      "dependencies": ["@radix-ui/react-tooltip"],
+      "devDependencies": []
+    },
+    {
+      "name": "dashboard",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/page.tsx"
+        }
+      ],
+      "dependencies": ["recharts", "lucide-react"],
+      "devDependencies": []
+    },
+    {
+      "name": "analytics",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/analytics/page.tsx"
+        }
+      ],
+      "dependencies": ["recharts", "lucide-react"],
+      "devDependencies": []
+    },
+    {
+      "name": "login",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/login/page.tsx"
+        }
+      ],
+      "dependencies": ["react-hook-form", "zod"],
+      "devDependencies": []
+    },
+    {
+      "name": "signup",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/signup/page.tsx"
+        }
+      ],
+      "dependencies": ["react-hook-form", "zod"],
+      "devDependencies": []
+    },
+    {
+      "name": "settings",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/settings/page.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "team",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/team/page.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    },
+    {
+      "name": "tables",
+      "type": "page",
+      "files": [
+        {
+          "name": "page.tsx",
+          "content": "app/tables/page.tsx"
+        }
+      ],
+      "dependencies": [],
+      "devDependencies": []
+    }
+  ]
+}
