@@ -190,6 +190,28 @@ const initialOrderData: Order[] = [
   },
 ]
 
+const TABLES_CODE = `"use client"
+
+import { V0Button } from "@/components/v0-button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { useToast } from "@/lib/use-toast"
+import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2, Plus, RefreshCw } from "lucide-react"
+import { useState } from "react"
+
+// Component interfaces and implementation here...
+export default function Tables() {
+  // Component logic here...
+}`
+
 export default function Tables() {
   const [customerData, setCustomerData] = useState<Customer[]>(initialCustomerData)
   const [productData, setProductData] = useState<Product[]>(initialProductData)
@@ -436,7 +458,10 @@ export default function Tables() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button prompt="Create an advanced data table with collapsible rows, search, filters, and actions" />
+          <V0Button 
+            prompt="Create an advanced data table with collapsible rows, search, filters, and actions"
+            code={TABLES_CODE}
+          />
         </div>
       </div>
 

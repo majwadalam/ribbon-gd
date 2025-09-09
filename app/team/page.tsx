@@ -110,6 +110,56 @@ const roles = [
   }
 ]
 
+const TEAM_CODE = `"use client"
+
+import { V0Button } from "@/components/v0-button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Label } from "@/components/ui/label"
+import { useToast } from "@/lib/use-toast"
+import { 
+  Users, 
+  Plus, 
+  Search, 
+  MoreHorizontal,
+  Mail,
+  Shield,
+  Crown,
+  User,
+  Settings,
+  Trash2,
+  UserX,
+  Download,
+  RefreshCw
+} from "lucide-react"
+import { useState } from "react"
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
+
+// Component implementation with team management functionality
+export default function Team() {
+  // Component logic here...
+}`
+
 export default function Team() {
   const [teamMembers, setTeamMembers] = useState(initialTeamMembers)
   const [searchTerm, setSearchTerm] = useState("")
@@ -268,7 +318,10 @@ export default function Team() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
-          <V0Button prompt="Create a comprehensive team management interface with user roles, permissions, and member cards" />
+          <V0Button 
+            prompt="Create a comprehensive team management interface with user roles, permissions, and member cards"
+            code={TEAM_CODE}
+          />
         </div>
       </div>
 

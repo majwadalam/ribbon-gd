@@ -11,6 +11,36 @@ import { Eye, EyeOff, Github, Mail, User, Building, Check } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
+const SIGNUP_CODE = `"use client"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Checkbox } from "@/components/ui/checkbox"
+import { V0Button } from "@/components/v0-button"
+import { Eye, EyeOff, Github, Mail, User, Building, Check } from "lucide-react"
+import { useState } from "react"
+import Link from "next/link"
+
+export default function SignUp() {
+  const [showPassword, setShowPassword] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
+
+  const steps = [
+    { id: 1, title: "Account", description: "Create your account" },
+    { id: 2, title: "Profile", description: "Tell us about yourself" },
+    { id: 3, title: "Complete", description: "You're all set!" },
+  ]
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-background via-background to-muted/20">
+      {/* Multi-step signup form implementation */}
+    </div>
+  )
+}`
+
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
@@ -240,6 +270,7 @@ export default function SignUp() {
         <div className="flex justify-center">
           <V0Button 
             prompt="Create a multi-step signup form with progress indicator, validation, and modern design"
+            code={SIGNUP_CODE}
             className="text-xs"
           />
         </div>

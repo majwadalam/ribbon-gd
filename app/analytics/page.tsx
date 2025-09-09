@@ -119,6 +119,23 @@ const analyticsData: AnalyticsData = {
 type ExportSection = "overview" | "revenue" | "users" | "performance" | "all";
 type ExportFormat = "csv" | "json";
 
+const ANALYTICS_CODE = `"use client"
+
+import { V0Button } from "@/components/v0-button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/lib/use-toast"
+import { TrendingUp, Users, CreditCard, Activity, Calendar, Download, BarChart3, PieChart, LineChart, RefreshCw } from "lucide-react"
+import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
+import { useState } from "react"
+
+// Comprehensive analytics dashboard with charts, metrics, and reporting features
+export default function Analytics() {
+  // Component logic here...
+}`
+
 export default function Analytics() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const { toast } = useToast()
@@ -242,7 +259,10 @@ export default function Analytics() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button prompt="Create a comprehensive analytics dashboard with charts, metrics, and reporting features" />
+          <V0Button 
+            prompt="Create a comprehensive analytics dashboard with charts, metrics, and reporting features"
+            code={ANALYTICS_CODE}
+          />
         </div>
       </div>
 

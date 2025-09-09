@@ -11,6 +11,48 @@ import { Eye, EyeOff, Github, Mail } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
+const LOGIN_CODE = `"use client"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Checkbox } from "@/components/ui/checkbox"
+import { V0Button } from "@/components/v0-button"
+import { Eye, EyeOff, Github, Mail } from "lucide-react"
+import { useState } from "react"
+import Link from "next/link"
+
+export default function Login() {
+  const [showPassword, setShowPassword] = useState(false)
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="w-full max-w-md space-y-6">
+        <div className="flex items-center justify-center space-x-2 mb-8">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground text-sm font-semibold">
+            R
+          </div>
+          <span className="text-2xl font-bold">Ribbon</span>
+        </div>
+
+        <Card className="glass-effect">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl">Welcome back</CardTitle>
+            <CardDescription>
+              Sign in to your account to continue
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Login form implementation */}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}`
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
 
@@ -122,6 +164,7 @@ export default function Login() {
         <div className="flex justify-center">
           <V0Button 
             prompt="Create a modern login form with social auth, validation, and clean design"
+            code={LOGIN_CODE}
             className="text-xs"
           />
         </div>

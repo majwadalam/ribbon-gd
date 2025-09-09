@@ -6,12 +6,23 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 interface V0ButtonProps {
   prompt?: string
+  code?: string
   className?: string
 }
 
-export function V0Button({ prompt = "Edit this template in v0", className }: V0ButtonProps) {
+export function V0Button({ 
+  prompt = "Edit this template in v0", 
+  code = "",
+  className 
+}: V0ButtonProps) {
   const handleV0Click = () => {
-    const v0Url = `https://v0.dev/chat?q=${encodeURIComponent(prompt)}`
+    let fullPrompt = prompt
+    
+    if (code) {
+      fullPrompt = `${prompt}\n\nHere's the current code:\n\`\`\`tsx\n${code}\n\`\`\``
+    }
+    
+    const v0Url = `https://v0.dev/chat?q=${encodeURIComponent(fullPrompt)}`
     window.open(v0Url, '_blank', 'noopener,noreferrer')
   }
 

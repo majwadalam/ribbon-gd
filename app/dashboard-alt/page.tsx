@@ -51,6 +51,39 @@ const responseTimeData = [
   { endpoint: 'DELETE /api/items', time: 167, efficiency: 88 }
 ]
 
+const DASHBOARD_ALT_CODE = `"use client"
+
+import { V0Button } from "@/components/v0-button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { useToast } from "@/lib/use-toast"
+import { 
+  TrendingUp, 
+  TrendingDown, 
+  Users, 
+  CreditCard, 
+  Activity, 
+  DollarSign,
+  ArrowUpRight,
+  ArrowDownRight,
+  Calendar,
+  MapPin,
+  Clock,
+  Star,
+  Download,
+  RefreshCw
+} from "lucide-react"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts'
+import { useState } from "react"
+
+// Alternative dashboard layout with enhanced visualizations and insights
+export default function DashboardAlt() {
+  // Component logic here...
+}`
+
 export default function DashboardAlt() {
   const { toast } = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -91,7 +124,10 @@ export default function DashboardAlt() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button prompt="Create an alternative dashboard layout with different card arrangements, progress bars, and enhanced metrics" />
+          <V0Button 
+            prompt="Create an alternative dashboard layout with different card arrangements, progress bars, and enhanced metrics"
+            code={DASHBOARD_ALT_CODE}
+          />
         </div>
       </div>
 
@@ -157,7 +193,7 @@ export default function DashboardAlt() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$127</div>
-                <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                  <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                   <TrendingUp className="h-3 w-3 text-green-500" />
                   <span className="text-green-500">+5.4%</span>
                   <span>vs last month</span>
@@ -501,4 +537,5 @@ export default function DashboardAlt() {
       </Tabs>
     </div>
   )
+
 }
