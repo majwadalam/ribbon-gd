@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { V0Button } from '@/components/v0-button';
 import { 
   User, 
   Bell, 
@@ -339,6 +340,7 @@ const Settings: React.FC = () => {
               Manage your account settings and preferences.
             </p>
           </div>
+          <V0Button componentName="settings" />
         </div>
 
         <Tabs defaultValue="profile" className="space-y-4">

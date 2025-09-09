@@ -6,7 +6,12 @@
       "Bash(pnpm dlx:*)",
       "Bash(pnpm install:*)",
       "Bash(pnpm add:*)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(npm run build:registry:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run build:*)",
+      "Bash(curl:*)",
+      "Bash(node scripts/build-registry.js)"
     ],
     "deny": [],
     "ask": []

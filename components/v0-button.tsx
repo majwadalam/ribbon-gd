@@ -35,14 +35,15 @@ export function V0Button({
             size="sm"
             onClick={handleV0Click}
             className={`flex items-center gap-2 ${className}`}
+            aria-label="Open in v0"
           >
             <Code className="h-4 w-4" />
-            <span className="hidden sm:inline">Edit in v0</span>
+            <span className="hidden sm:inline">Open in v0</span>
             <ExternalLink className="h-3 w-3" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Open this template in v0 for editing</p>
+          <p>Open {componentName ? 'this component' : 'this template'} in v0 for AI-powered editing</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -1,0 +1,192 @@
+{
+  "name": "ribbon-gd",
+  "description": "A modern dashboard template with shadcn/ui components",
+  "version": "0.1.0",
+  "components": [
+    {
+      "name": "avatar",
+      "type": "ui",
+      "url": "/r/avatar.json"
+    },
+    {
+      "name": "badge",
+      "type": "ui",
+      "url": "/r/badge.json"
+    },
+    {
+      "name": "breadcrumb",
+      "type": "ui",
+      "url": "/r/breadcrumb.json"
+    },
+    {
+      "name": "button",
+      "type": "ui",
+      "url": "/r/button.json"
+    },
+    {
+      "name": "calendar",
+      "type": "ui",
+      "url": "/r/calendar.json"
+    },
+    {
+      "name": "card",
+      "type": "ui",
+      "url": "/r/card.json"
+    },
+    {
+      "name": "chart",
+      "type": "ui",
+      "url": "/r/chart.json"
+    },
+    {
+      "name": "checkbox",
+      "type": "ui",
+      "url": "/r/checkbox.json"
+    },
+    {
+      "name": "collapsible",
+      "type": "ui",
+      "url": "/r/collapsible.json"
+    },
+    {
+      "name": "command",
+      "type": "ui",
+      "url": "/r/command.json"
+    },
+    {
+      "name": "dialog",
+      "type": "ui",
+      "url": "/r/dialog.json"
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "ui",
+      "url": "/r/dropdown-menu.json"
+    },
+    {
+      "name": "form",
+      "type": "ui",
+      "url": "/r/form.json"
+    },
+    {
+      "name": "input",
+      "type": "ui",
+      "url": "/r/input.json"
+    },
+    {
+      "name": "label",
+      "type": "ui",
+      "url": "/r/label.json"
+    },
+    {
+      "name": "navigation-menu",
+      "type": "ui",
+      "url": "/r/navigation-menu.json"
+    },
+    {
+      "name": "popover",
+      "type": "ui",
+      "url": "/r/popover.json"
+    },
+    {
+      "name": "progress",
+      "type": "ui",
+      "url": "/r/progress.json"
+    },
+    {
+      "name": "scroll-area",
+      "type": "ui",
+      "url": "/r/scroll-area.json"
+    },
+    {
+      "name": "select",
+      "type": "ui",
+      "url": "/r/select.json"
+    },
+    {
+      "name": "separator",
+      "type": "ui",
+      "url": "/r/separator.json"
+    },
+    {
+      "name": "sheet",
+      "type": "ui",
+      "url": "/r/sheet.json"
+    },
+    {
+      "name": "sidebar",
+      "type": "ui",
+      "url": "/r/sidebar.json"
+    },
+    {
+      "name": "skeleton",
+      "type": "ui",
+      "url": "/r/skeleton.json"
+    },
+    {
+      "name": "switch",
+      "type": "ui",
+      "url": "/r/switch.json"
+    },
+    {
+      "name": "table",
+      "type": "ui",
+      "url": "/r/table.json"
+    },
+    {
+      "name": "tabs",
+      "type": "ui",
+      "url": "/r/tabs.json"
+    },
+    {
+      "name": "textarea",
+      "type": "ui",
+      "url": "/r/textarea.json"
+    },
+    {
+      "name": "toaster",
+      "type": "ui",
+      "url": "/r/toaster.json"
+    },
+    {
+      "name": "tooltip",
+      "type": "ui",
+      "url": "/r/tooltip.json"
+    },
+    {
+      "name": "dashboard",
+      "type": "page",
+      "url": "/r/dashboard.json"
+    },
+    {
+      "name": "analytics",
+      "type": "page",
+      "url": "/r/analytics.json"
+    },
+    {
+      "name": "login",
+      "type": "page",
+      "url": "/r/login.json"
+    },
+    {
+      "name": "signup",
+      "type": "page",
+      "url": "/r/signup.json"
+    },
+    {
+      "name": "settings",
+      "type": "page",
+      "url": "/r/settings.json"
+    },
+    {
+      "name": "team",
+      "type": "page",
+      "url": "/r/team.json"
+    },
+    {
+      "name": "tables",
+      "type": "page",
+      "url": "/r/tables.json"
+    }
+  ]
+}
