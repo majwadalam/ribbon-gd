@@ -162,6 +162,63 @@ const Toaster: React.FC<ToasterProps> = ({ toasts, dismiss }) => {
   );
 };
 
+const SETTINGS_CODE = `"use client"
+import React, { useState, useRef } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { V0Button } from '@/components/v0-button';
+import { 
+  User, 
+  Bell, 
+  Shield, 
+  CreditCard, 
+  Key, 
+  Upload,
+  Trash2,
+  Eye,
+  EyeOff,
+  Check,
+  X
+} from 'lucide-react';
+
+// Comprehensive settings page with profile, notifications, security, billing, and API management
+const Settings: React.FC = () => {
+  // Component implementation with tabs for profile, notifications, security, billing, and API
+  // Includes avatar upload, password management, notification preferences, and API key generation
+  
+  return (
+    <div className="space-y-6 p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+          <p className="text-muted-foreground mt-1">
+            Manage your account settings and preferences.
+          </p>
+        </div>
+        <V0Button 
+          prompt="Create a comprehensive settings page with profile, notifications, security, billing, and API management"
+          code={SETTINGS_CODE}
+        />
+      </div>
+
+      <Tabs defaultValue="profile" className="space-y-4">
+        {/* Profile, Notifications, Security, Billing, and API tabs */}
+      </Tabs>
+    </div>
+  );
+};
+
+export default Settings;`;
+
 const Settings: React.FC = () => {
   const { toasts, toast, dismiss } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -340,7 +397,10 @@ const Settings: React.FC = () => {
               Manage your account settings and preferences.
             </p>
           </div>
-          <V0Button componentName="settings" />
+          <V0Button 
+            prompt="Create a comprehensive settings page with profile, notifications, security, billing, and API management"
+            code={SETTINGS_CODE}
+          />
         </div>
 
         <Tabs defaultValue="profile" className="space-y-4">
