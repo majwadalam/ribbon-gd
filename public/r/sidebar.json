@@ -18,10 +18,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "sidebar component from ribbon-gd",
-    "source": "http://localhost:3000/r/sidebar.json"
   }
 }

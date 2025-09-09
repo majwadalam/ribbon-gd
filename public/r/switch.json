@@ -18,10 +18,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "switch component from ribbon-gd",
-    "source": "http://localhost:3000/r/switch.json"
   }
 }

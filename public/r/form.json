@@ -20,10 +20,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "form component from ribbon-gd",
-    "source": "http://localhost:3000/r/form.json"
   }
 }

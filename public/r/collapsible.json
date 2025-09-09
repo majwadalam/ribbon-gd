@@ -18,10 +18,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "collapsible component from ribbon-gd",
-    "source": "http://localhost:3000/r/collapsible.json"
   }
 }

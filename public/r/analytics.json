@@ -19,10 +19,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "analytics component from ribbon-gd",
-    "source": "http://localhost:3000/r/analytics.json"
   }
 }

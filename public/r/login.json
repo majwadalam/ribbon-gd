@@ -19,10 +19,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "login component from ribbon-gd",
-    "source": "http://localhost:3000/r/login.json"
   }
 }

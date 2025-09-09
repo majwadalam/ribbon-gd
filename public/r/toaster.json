@@ -16,10 +16,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "toaster component from ribbon-gd",
-    "source": "http://localhost:3000/r/toaster.json"
   }
 }

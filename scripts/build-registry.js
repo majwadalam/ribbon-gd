@@ -5,18 +5,22 @@ const path = require('path');
 
 // Read the registry configuration
 const registryPath = path.join(process.cwd(), 'registry.json');
+
+if (!fs.existsSync(registryPath)) {
+  console.error('Error: registry.json not found at:', registryPath);
+  process.exit(1);
+}
+
 const registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
 
 // Create public/r directory if it doesn't exist
 const publicDir = path.join(process.cwd(), 'public');
 const registryDir = path.join(publicDir, 'r');
 
-if (!fs.existsSync(publicDir)) {
-  fs.mkdirSync(publicDir);
-}
-
+// Create directories recursively
 if (!fs.existsSync(registryDir)) {
-  fs.mkdirSync(registryDir);
+  fs.mkdirSync(registryDir, { recursive: true });
+  console.log('Created directory:', registryDir);
 }
 
 // Process each component in the registry
@@ -33,23 +37,27 @@ registry.items.forEach(item => {
       };
     });
 
-    // Create the component JSON
+    // Create the component JSON (v0 compatible format)
     const componentData = {
       name: item.name,
       type: item.type,
       files: files,
       dependencies: item.dependencies || [],
       devDependencies: item.devDependencies || [],
-      registryDependencies: [],
+      registryDependencies: item.registryDependencies || [],
       tailwind: {
         config: registry.tailwind?.config || {}
-      },
-      cssVars: {},
-      meta: {
-        description: `${item.name} component from ${registry.name}`,
-        source: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/r/${item.name}.json`
       }
     };
+    
+    // Only add meta if we have a URL
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL;
+    if (appUrl) {
+      componentData.meta = {
+        description: `${item.name} component from ${registry.name}`,
+        source: `https://${appUrl.replace(/^https?:\/\//, '')}/r/${item.name}.json`
+      };
+    }
 
     // Write the component JSON file
     const outputPath = path.join(registryDir, `${item.name}.json`);

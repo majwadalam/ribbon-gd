@@ -19,10 +19,5 @@
         "extend": {}
       }
     }
-  },
-  "cssVars": {},
-  "meta": {
-    "description": "signup component from ribbon-gd",
-    "source": "http://localhost:3000/r/signup.json"
   }
 }
