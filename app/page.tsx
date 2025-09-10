@@ -323,7 +323,7 @@ export default function Dashboard() {
             Export
           </Button>
           <V0Button 
-            prompt="Create a Stripe-inspired dashboard with analytics cards, charts, and metrics"
+            prompt="just render the ui as it is of this page , dont make any changes, just as it is"
             code={DASHBOARD_CODE}
           />
         </div>
