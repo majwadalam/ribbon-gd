@@ -39,24 +39,33 @@ registry.items.forEach(item => {
 
     // Create the component JSON (v0 compatible format)
     const componentData = {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       name: item.name,
-      type: item.type,
-      files: files,
+      type: item.type === "page" ? "registry:block" : "registry:ui",
+      description: `${item.name} component from ${registry.name}`,
+      registryDependencies: item.registryDependencies || [],
+      files: files.map(file => ({
+        path: file.name,
+        content: file.content,
+        type: item.type === "page" ? "registry:page" : "registry:component",
+        target: item.type === "page" ? `app/${item.name}/page.tsx` : `components/ui/${file.name}`
+      })),
       dependencies: item.dependencies || [],
       devDependencies: item.devDependencies || [],
-      registryDependencies: item.registryDependencies || [],
       tailwind: {
         config: registry.tailwind?.config || {}
+      },
+      cssVars: {
+        light: {},
+        dark: {}
       }
     };
     
-    // Only add meta if we have a URL
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL;
-    if (appUrl) {
-      componentData.meta = {
-        description: `${item.name} component from ${registry.name}`,
-        source: `https://${appUrl.replace(/^https?:\/\//, '')}/r/${item.name}.json`
-      };
+    // Add categories based on type
+    if (item.type === "page") {
+      componentData.categories = ["pages"];
+    } else {
+      componentData.categories = ["components"];
     }
 
     // Write the component JSON file

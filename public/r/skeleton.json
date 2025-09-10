@@ -1,20 +1,31 @@
 {
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "skeleton",
-  "type": "ui",
+  "type": "registry:ui",
+  "description": "skeleton component from ribbon-gd",
+  "registryDependencies": [],
   "files": [
     {
-      "name": "skeleton.tsx",
-      "content": "import { cn } from \"@/lib/utils\"\r\n\r\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\r\n  return (\r\n    <div\r\n      data-slot=\"skeleton\"\r\n      className={cn(\"bg-accent animate-pulse rounded-md\", className)}\r\n      {...props}\r\n    />\r\n  )\r\n}\r\n\r\nexport { Skeleton }\r\n"
+      "path": "skeleton.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\"bg-accent animate-pulse rounded-md\", className)}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n",
+      "type": "registry:component",
+      "target": "components/ui/skeleton.tsx"
     }
   ],
   "dependencies": [],
   "devDependencies": [],
-  "registryDependencies": [],
   "tailwind": {
     "config": {
       "theme": {
         "extend": {}
       }
     }
-  }
+  },
+  "cssVars": {
+    "light": {},
+    "dark": {}
+  },
+  "categories": [
+    "components"
+  ]
 }

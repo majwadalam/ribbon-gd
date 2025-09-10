@@ -584,6 +584,11 @@ export default function DashboardAlt() {
   )
 }`
 
+const prompt = `
+https://ribbon-gd.vercel.app/dashboard-alt
+just render the ui as it is of this page , no change nothing. , just as it is
+`
+
 export default function DashboardAlt() {
   // Custom toast notifications for user feedback
   const { toast } = useToast()
@@ -630,8 +635,8 @@ export default function DashboardAlt() {
             Refresh
           </Button>
           <V0Button 
-            prompt="just render the ui as it is of this page , dont make any changes, just as it is"
-            code={DASHBOARD_ALT_CODE}
+            prompt={prompt}
+            // code={DASHBOARD_ALT_CODE}
           />
         </div>
       </div>
