@@ -17,7 +17,7 @@ export function V0Button({ prompt, componentName, className }: V0ButtonProps) {
     if (componentName) {
       // Use the registry endpoint for component-specific opening
       const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
-      const registryUrl = `${baseUrl}/api/r/${componentName}.json`
+      const registryUrl = `${baseUrl}/api/r/${componentName}`
       v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
     } else if (prompt) {
       // Fall back to simple prompt-based chat

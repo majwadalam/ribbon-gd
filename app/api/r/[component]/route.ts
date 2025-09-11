@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import fs from 'fs/promises'
 import path from 'path'
-import registry from '@/registry.json'
 
 export async function GET(
   request: NextRequest,
@@ -11,43 +10,28 @@ export async function GET(
     const resolvedParams = await params
     const componentName = resolvedParams.component.replace('.json', '')
     
-    // Find the component in the registry
-    const component = registry.items.find(item => item.name === componentName)
+    // Read the component JSON file directly from public/r/
+    const jsonFilePath = path.join(process.cwd(), 'public', 'r', `${componentName}.json`)
     
-    if (!component) {
+    let componentData
+    try {
+      const jsonContent = await fs.readFile(jsonFilePath, 'utf-8')
+      componentData = JSON.parse(jsonContent)
+    } catch (error) {
       return NextResponse.json(
         { error: 'Component not found' },
         { status: 404 }
       )
     }
 
-    // Read the actual file contents
-    const files = await Promise.all(
-      component.files.map(async (file) => {
-        const filePath = path.join(process.cwd(), file.content)
-        const content = await fs.readFile(filePath, 'utf-8')
-        
-        return {
-          name: file.name,
-          content: content
-        }
-      })
-    )
-
-    // Prepare the response in the format v0 expects
+    // The JSON files already contain the component data in the correct format
+    // Just add some additional metadata that v0 expects
     const response = {
-      name: component.name,
-      type: component.type,
-      files: files,
-      dependencies: component.dependencies || [],
-      devDependencies: component.devDependencies || [],
-      registryDependencies: [],
-      tailwind: {
-        config: registry.tailwind?.config || {}
-      },
-      cssVars: {},
+      ...componentData,
+      registryDependencies: componentData.registryDependencies || [],
+      cssVars: componentData.cssVars || {},
       meta: {
-        description: `${component.name} component from ${registry.name}`,
+        description: `${componentData.name} component from ribbon-gd`,
         source: request.url
       }
     }
