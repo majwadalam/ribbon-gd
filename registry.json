@@ -1,5 +1,5 @@
 {
-  "$schema": "https://shadcn.com/registry/schema.json",
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "ribbon-gd",
   "description": "A modern dashboard template with shadcn/ui components",
   "version": "0.1.0",
@@ -595,6 +595,5 @@
       "devDependencies": []
     }
   ],
-  "": "https://ui.shadcn.com/schema/registry.json",
   "homepage": "https://ribbon-gd.vercel.app"
 }

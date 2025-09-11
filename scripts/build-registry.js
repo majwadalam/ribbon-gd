@@ -28,14 +28,14 @@ registry.items.forEach(item => {
   try {
     // Read the actual file contents
     const files = item.files.map(file => {
-      const filePath = path.join(process.cwd(), file.content || file.path);
+      const filePath = path.join(process.cwd(), file.path);
       const content = fs.readFileSync(filePath, 'utf-8');
       
       const isPage = item.type === "page";
       const targetPath = isPage ? `app/${item.name}/page.tsx` : undefined;
 
       return {
-        path: file.content || file.path,
+        path: file.path,
         content: content,
         type: isPage ? "registry:page" : "registry:component",
         target: targetPath
