@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { V0Button } from '@/components/v0-button';
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { 
   User, 
   Bell, 
@@ -23,7 +23,9 @@ import {
   Eye,
   EyeOff,
   Check,
-  X
+  X,
+  Code,
+  ExternalLink
 } from 'lucide-react';
 
 // Type definitions
@@ -340,7 +342,31 @@ const Settings: React.FC = () => {
               Manage your account settings and preferences.
             </p>
           </div>
-          <V0Button componentName="settings" />
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+                    const registryUrl = `${baseUrl}/r/settings.json`
+                    const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
+                    window.open(v0Url, '_blank', 'noopener,noreferrer')
+                  }}
+                  className="flex items-center gap-2"
+                  aria-label="Open in v0"
+                >
+                  <Code className="h-4 w-4" />
+                  <span className="hidden sm:inline">Open in v0</span>
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Open this component in v0 for AI-powered editing</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
         </div>
 
         <Tabs defaultValue="profile" className="space-y-4">

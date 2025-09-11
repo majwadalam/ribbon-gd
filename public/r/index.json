@@ -5,187 +5,187 @@
   "components": [
     {
       "name": "avatar",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/avatar.json"
     },
     {
       "name": "badge",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/badge.json"
     },
     {
       "name": "breadcrumb",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/breadcrumb.json"
     },
     {
       "name": "button",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/button.json"
     },
     {
       "name": "calendar",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/calendar.json"
     },
     {
       "name": "card",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/card.json"
     },
     {
       "name": "chart",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/chart.json"
     },
     {
       "name": "checkbox",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/checkbox.json"
     },
     {
       "name": "collapsible",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/collapsible.json"
     },
     {
       "name": "command",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/command.json"
     },
     {
       "name": "dialog",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/dialog.json"
     },
     {
       "name": "dropdown-menu",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/dropdown-menu.json"
     },
     {
       "name": "form",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/form.json"
     },
     {
       "name": "input",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/input.json"
     },
     {
       "name": "label",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/label.json"
     },
     {
       "name": "navigation-menu",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/navigation-menu.json"
     },
     {
       "name": "popover",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/popover.json"
     },
     {
       "name": "progress",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/progress.json"
     },
     {
       "name": "scroll-area",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/scroll-area.json"
     },
     {
       "name": "select",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/select.json"
     },
     {
       "name": "separator",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/separator.json"
     },
     {
       "name": "sheet",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/sheet.json"
     },
     {
       "name": "sidebar",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/sidebar.json"
     },
     {
       "name": "skeleton",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/skeleton.json"
     },
     {
       "name": "switch",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/switch.json"
     },
     {
       "name": "table",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/table.json"
     },
     {
       "name": "tabs",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/tabs.json"
     },
     {
       "name": "textarea",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/textarea.json"
     },
     {
       "name": "toaster",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/toaster.json"
     },
     {
       "name": "tooltip",
-      "type": "ui",
+      "type": "registry:ui",
       "url": "/r/tooltip.json"
     },
     {
       "name": "dashboard",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/dashboard.json"
     },
     {
       "name": "analytics",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/analytics.json"
     },
     {
       "name": "login",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/login.json"
     },
     {
       "name": "signup",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/signup.json"
     },
     {
       "name": "settings",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/settings.json"
     },
     {
       "name": "team",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/team.json"
     },
     {
       "name": "tables",
-      "type": "page",
+      "type": "registry:block",
       "url": "/r/tables.json"
     }
   ]

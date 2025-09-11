@@ -24,7 +24,7 @@ export async function GET(
     // Read the actual file contents
     const files = await Promise.all(
       component.files.map(async (file) => {
-        const filePath = path.join(process.cwd(), file.content)
+        const filePath = path.join(process.cwd(), file.path)
         const content = await fs.readFile(filePath, 'utf-8')
         
         return {

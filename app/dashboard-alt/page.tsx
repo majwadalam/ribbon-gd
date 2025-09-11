@@ -1,10 +1,10 @@
 "use client"
 
-import { V0Button } from "@/components/v0-button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Progress } from "@/components/ui/progress"
 import { useToast } from "@/lib/use-toast"
 import { 
@@ -21,7 +21,9 @@ import {
   Clock,
   Star,
   Download,
-  RefreshCw
+  RefreshCw,
+  Code,
+  ExternalLink
 } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts'
 import { useState } from "react"
@@ -91,7 +93,31 @@ export default function DashboardAlt() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button componentName="dashboard-alt" />
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+                    const registryUrl = `${baseUrl}/r/dashboard.json`
+                    const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
+                    window.open(v0Url, '_blank', 'noopener,noreferrer')
+                  }}
+                  className="flex items-center gap-2"
+                  aria-label="Open in v0"
+                >
+                  <Code className="h-4 w-4" />
+                  <span className="hidden sm:inline">Open in v0</span>
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Open this component in v0 for AI-powered editing</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
         </div>
       </div>
 

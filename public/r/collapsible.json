@@ -1,22 +1,30 @@
 {
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "collapsible",
-  "type": "ui",
-  "files": [
-    {
-      "name": "collapsible.tsx",
-      "content": "\"use client\"\n\nimport * as CollapsiblePrimitive from \"@radix-ui/react-collapsible\"\n\nfunction Collapsible({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {\n  return <CollapsiblePrimitive.Root data-slot=\"collapsible\" {...props} />\n}\n\nfunction CollapsibleTrigger({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {\n  return (\n    <CollapsiblePrimitive.CollapsibleTrigger\n      data-slot=\"collapsible-trigger\"\n      {...props}\n    />\n  )\n}\n\nfunction CollapsibleContent({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {\n  return (\n    <CollapsiblePrimitive.CollapsibleContent\n      data-slot=\"collapsible-content\"\n      {...props}\n    />\n  )\n}\n\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent }\n"
-    }
-  ],
+  "type": "registry:ui",
+  "title": "Collapsible",
+  "description": "collapsible component from ribbon-gd",
   "dependencies": [
     "@radix-ui/react-collapsible"
   ],
   "devDependencies": [],
   "registryDependencies": [],
+  "files": [
+    {
+      "path": "components/ui/collapsible.tsx",
+      "content": "\"use client\"\n\nimport * as CollapsiblePrimitive from \"@radix-ui/react-collapsible\"\n\nfunction Collapsible({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {\n  return <CollapsiblePrimitive.Root data-slot=\"collapsible\" {...props} />\n}\n\nfunction CollapsibleTrigger({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleTrigger>) {\n  return (\n    <CollapsiblePrimitive.CollapsibleTrigger\n      data-slot=\"collapsible-trigger\"\n      {...props}\n    />\n  )\n}\n\nfunction CollapsibleContent({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.CollapsibleContent>) {\n  return (\n    <CollapsiblePrimitive.CollapsibleContent\n      data-slot=\"collapsible-content\"\n      {...props}\n    />\n  )\n}\n\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent }\n",
+      "type": "registry:component"
+    }
+  ],
   "tailwind": {
     "config": {
       "theme": {
         "extend": {}
       }
     }
+  },
+  "meta": {
+    "description": "collapsible component from ribbon-gd",
+    "source": "https://ribbon-gd.vercel.app/r/collapsible.json"
   }
 }

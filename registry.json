@@ -14,71 +14,95 @@
   "items": [
     {
       "name": "avatar",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "avatar component from ribbon-gd",
       "files": [
         {
-          "name": "avatar.tsx",
-          "content": "components/ui/avatar.tsx"
+          "path": "components/ui/avatar.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-avatar"],
+      "dependencies": [
+        "@radix-ui/react-avatar"
+      ],
       "devDependencies": []
     },
     {
       "name": "badge",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "badge component from ribbon-gd",
       "files": [
         {
-          "name": "badge.tsx",
-          "content": "components/ui/badge.tsx"
+          "path": "components/ui/badge.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["class-variance-authority"],
+      "dependencies": [
+        "class-variance-authority"
+      ],
       "devDependencies": []
     },
     {
       "name": "breadcrumb",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "breadcrumb component from ribbon-gd",
       "files": [
         {
-          "name": "breadcrumb.tsx",
-          "content": "components/ui/breadcrumb.tsx"
+          "path": "components/ui/breadcrumb.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-slot"],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "devDependencies": []
     },
     {
       "name": "button",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "button component from ribbon-gd",
       "files": [
         {
-          "name": "button.tsx",
-          "content": "components/ui/button.tsx"
+          "path": "components/ui/button.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-slot", "class-variance-authority"],
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
       "devDependencies": []
     },
     {
       "name": "calendar",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "calendar component from ribbon-gd",
       "files": [
         {
-          "name": "calendar.tsx",
-          "content": "components/ui/calendar.tsx"
+          "path": "components/ui/calendar.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["react-day-picker", "date-fns"],
+      "dependencies": [
+        "react-day-picker",
+        "date-fns"
+      ],
       "devDependencies": []
     },
     {
       "name": "card",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "card component from ribbon-gd",
       "files": [
         {
-          "name": "card.tsx",
-          "content": "components/ui/card.tsx"
+          "path": "components/ui/card.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -86,95 +110,127 @@
     },
     {
       "name": "chart",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "chart component from ribbon-gd",
       "files": [
         {
-          "name": "chart.tsx",
-          "content": "components/ui/chart.tsx"
+          "path": "components/ui/chart.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["recharts"],
+      "dependencies": [
+        "recharts"
+      ],
       "devDependencies": []
     },
     {
       "name": "checkbox",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "checkbox component from ribbon-gd",
       "files": [
         {
-          "name": "checkbox.tsx",
-          "content": "components/ui/checkbox.tsx"
+          "path": "components/ui/checkbox.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-checkbox"],
+      "dependencies": [
+        "@radix-ui/react-checkbox"
+      ],
       "devDependencies": []
     },
     {
       "name": "collapsible",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "collapsible component from ribbon-gd",
       "files": [
         {
-          "name": "collapsible.tsx",
-          "content": "components/ui/collapsible.tsx"
+          "path": "components/ui/collapsible.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-collapsible"],
+      "dependencies": [
+        "@radix-ui/react-collapsible"
+      ],
       "devDependencies": []
     },
     {
       "name": "command",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "command component from ribbon-gd",
       "files": [
         {
-          "name": "command.tsx",
-          "content": "components/ui/command.tsx"
+          "path": "components/ui/command.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["cmdk"],
+      "dependencies": [
+        "cmdk"
+      ],
       "devDependencies": []
     },
     {
       "name": "dialog",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "dialog component from ribbon-gd",
       "files": [
         {
-          "name": "dialog.tsx",
-          "content": "components/ui/dialog.tsx"
+          "path": "components/ui/dialog.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-dialog"],
+      "dependencies": [
+        "@radix-ui/react-dialog"
+      ],
       "devDependencies": []
     },
     {
       "name": "dropdown-menu",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Dropdown-menu",
+      "description": "dropdown-menu component from ribbon-gd",
       "files": [
         {
-          "name": "dropdown-menu.tsx",
-          "content": "components/ui/dropdown-menu.tsx"
+          "path": "components/ui/dropdown-menu.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-dropdown-menu"],
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu"
+      ],
       "devDependencies": []
     },
     {
       "name": "form",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "form component from ribbon-gd",
       "files": [
         {
-          "name": "form.tsx",
-          "content": "components/ui/form.tsx"
+          "path": "components/ui/form.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["react-hook-form", "@hookform/resolvers", "@radix-ui/react-label"],
+      "dependencies": [
+        "react-hook-form",
+        "@hookform/resolvers",
+        "@radix-ui/react-label"
+      ],
       "devDependencies": []
     },
     {
       "name": "input",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "input component from ribbon-gd",
       "files": [
         {
-          "name": "input.tsx",
-          "content": "components/ui/input.tsx"
+          "path": "components/ui/input.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -182,119 +238,157 @@
     },
     {
       "name": "label",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "label component from ribbon-gd",
       "files": [
         {
-          "name": "label.tsx",
-          "content": "components/ui/label.tsx"
+          "path": "components/ui/label.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-label"],
+      "dependencies": [
+        "@radix-ui/react-label"
+      ],
       "devDependencies": []
     },
     {
       "name": "navigation-menu",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Navigation-menu",
+      "description": "navigation-menu component from ribbon-gd",
       "files": [
         {
-          "name": "navigation-menu.tsx",
-          "content": "components/ui/navigation-menu.tsx"
+          "path": "components/ui/navigation-menu.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-navigation-menu"],
+      "dependencies": [
+        "@radix-ui/react-navigation-menu"
+      ],
       "devDependencies": []
     },
     {
       "name": "popover",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "popover component from ribbon-gd",
       "files": [
         {
-          "name": "popover.tsx",
-          "content": "components/ui/popover.tsx"
+          "path": "components/ui/popover.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-popover"],
+      "dependencies": [
+        "@radix-ui/react-popover"
+      ],
       "devDependencies": []
     },
     {
       "name": "progress",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "progress component from ribbon-gd",
       "files": [
         {
-          "name": "progress.tsx",
-          "content": "components/ui/progress.tsx"
+          "path": "components/ui/progress.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-progress"],
+      "dependencies": [
+        "@radix-ui/react-progress"
+      ],
       "devDependencies": []
     },
     {
       "name": "scroll-area",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Scroll-area",
+      "description": "scroll-area component from ribbon-gd",
       "files": [
         {
-          "name": "scroll-area.tsx",
-          "content": "components/ui/scroll-area.tsx"
+          "path": "components/ui/scroll-area.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-scroll-area"],
+      "dependencies": [
+        "@radix-ui/react-scroll-area"
+      ],
       "devDependencies": []
     },
     {
       "name": "select",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "select component from ribbon-gd",
       "files": [
         {
-          "name": "select.tsx",
-          "content": "components/ui/select.tsx"
+          "path": "components/ui/select.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-select"],
+      "dependencies": [
+        "@radix-ui/react-select"
+      ],
       "devDependencies": []
     },
     {
       "name": "separator",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "separator component from ribbon-gd",
       "files": [
         {
-          "name": "separator.tsx",
-          "content": "components/ui/separator.tsx"
+          "path": "components/ui/separator.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-separator"],
+      "dependencies": [
+        "@radix-ui/react-separator"
+      ],
       "devDependencies": []
     },
     {
       "name": "sheet",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "sheet component from ribbon-gd",
       "files": [
         {
-          "name": "sheet.tsx",
-          "content": "components/ui/sheet.tsx"
+          "path": "components/ui/sheet.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-dialog"],
+      "dependencies": [
+        "@radix-ui/react-dialog"
+      ],
       "devDependencies": []
     },
     {
       "name": "sidebar",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "sidebar component from ribbon-gd",
       "files": [
         {
-          "name": "sidebar.tsx",
-          "content": "components/ui/sidebar.tsx"
+          "path": "components/ui/sidebar.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-slot"],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "devDependencies": []
     },
     {
       "name": "skeleton",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "skeleton component from ribbon-gd",
       "files": [
         {
-          "name": "skeleton.tsx",
-          "content": "components/ui/skeleton.tsx"
+          "path": "components/ui/skeleton.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -302,23 +396,29 @@
     },
     {
       "name": "switch",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "switch component from ribbon-gd",
       "files": [
         {
-          "name": "switch.tsx",
-          "content": "components/ui/switch.tsx"
+          "path": "components/ui/switch.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-switch"],
+      "dependencies": [
+        "@radix-ui/react-switch"
+      ],
       "devDependencies": []
     },
     {
       "name": "table",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "table component from ribbon-gd",
       "files": [
         {
-          "name": "table.tsx",
-          "content": "components/ui/table.tsx"
+          "path": "components/ui/table.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -326,23 +426,29 @@
     },
     {
       "name": "tabs",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "tabs component from ribbon-gd",
       "files": [
         {
-          "name": "tabs.tsx",
-          "content": "components/ui/tabs.tsx"
+          "path": "components/ui/tabs.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-tabs"],
+      "dependencies": [
+        "@radix-ui/react-tabs"
+      ],
       "devDependencies": []
     },
     {
       "name": "textarea",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "textarea component from ribbon-gd",
       "files": [
         {
-          "name": "textarea.tsx",
-          "content": "components/ui/textarea.tsx"
+          "path": "components/ui/textarea.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -350,11 +456,13 @@
     },
     {
       "name": "toaster",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Toaster",
+      "description": "toaster component from ribbon-gd",
       "files": [
         {
-          "name": "toaser.tsx",
-          "content": "components/ui/toaser.tsx"
+          "path": "components/ui/toaser.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -362,71 +470,97 @@
     },
     {
       "name": "tooltip",
-      "type": "ui",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "tooltip component from ribbon-gd",
       "files": [
         {
-          "name": "tooltip.tsx",
-          "content": "components/ui/tooltip.tsx"
+          "path": "components/ui/tooltip.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["@radix-ui/react-tooltip"],
+      "dependencies": [
+        "@radix-ui/react-tooltip"
+      ],
       "devDependencies": []
     },
     {
       "name": "dashboard",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Dashboard",
+      "description": "dashboard component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/page.tsx"
+          "path": "app/page.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["recharts", "lucide-react"],
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
       "devDependencies": []
     },
     {
       "name": "analytics",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Analytics",
+      "description": "analytics component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/analytics/page.tsx"
+          "path": "app/analytics/page.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["recharts", "lucide-react"],
+      "dependencies": [
+        "recharts",
+        "lucide-react"
+      ],
       "devDependencies": []
     },
     {
       "name": "login",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Login",
+      "description": "login component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/login/page.tsx"
+          "path": "app/login/page.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["react-hook-form", "zod"],
+      "dependencies": [
+        "react-hook-form",
+        "zod"
+      ],
       "devDependencies": []
     },
     {
       "name": "signup",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Signup",
+      "description": "signup component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/signup/page.tsx"
+          "path": "app/signup/page.tsx",
+          "type": "registry:component"
         }
       ],
-      "dependencies": ["react-hook-form", "zod"],
+      "dependencies": [
+        "react-hook-form",
+        "zod"
+      ],
       "devDependencies": []
     },
     {
       "name": "settings",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Settings",
+      "description": "settings component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/settings/page.tsx"
+          "path": "app/settings/page.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -434,11 +568,13 @@
     },
     {
       "name": "team",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Team",
+      "description": "team component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/team/page.tsx"
+          "path": "app/team/page.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
@@ -446,15 +582,19 @@
     },
     {
       "name": "tables",
-      "type": "page",
+      "type": "registry:block",
+      "title": "Tables",
+      "description": "tables component from ribbon-gd",
       "files": [
         {
-          "name": "page.tsx",
-          "content": "app/tables/page.tsx"
+          "path": "app/tables/page.tsx",
+          "type": "registry:component"
         }
       ],
       "dependencies": [],
       "devDependencies": []
     }
-  ]
+  ],
+  "": "https://ui.shadcn.com/schema/registry.json",
+  "homepage": "https://ribbon-gd.vercel.app"
 }

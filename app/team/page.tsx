@@ -1,6 +1,5 @@
 "use client"
 
-import { V0Button } from "@/components/v0-button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/lib/use-toast"
 import { 
   Users, 
@@ -38,7 +38,9 @@ import {
   Trash2,
   UserX,
   Download,
-  RefreshCw
+  RefreshCw,
+  Code,
+  ExternalLink
 } from "lucide-react"
 import { useState } from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
@@ -268,7 +270,31 @@ export default function Team() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
-          <V0Button componentName="team" />
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+                    const registryUrl = `${baseUrl}/r/team.json`
+                    const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
+                    window.open(v0Url, '_blank', 'noopener,noreferrer')
+                  }}
+                  className="flex items-center gap-2"
+                  aria-label="Open in v0"
+                >
+                  <Code className="h-4 w-4" />
+                  <span className="hidden sm:inline">Open in v0</span>
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Open this component in v0 for AI-powered editing</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
         </div>
       </div>
 

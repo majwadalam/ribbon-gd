@@ -1,6 +1,5 @@
 "use client"
 
-import { V0Button } from "@/components/v0-button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -11,8 +10,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/lib/use-toast"
-import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2, Plus, RefreshCw } from "lucide-react"
+import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2, Plus, RefreshCw, Code, ExternalLink } from "lucide-react"
 import { useState } from "react"
 
 interface CustomerDetails {
@@ -436,7 +436,31 @@ export default function Tables() {
             <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <V0Button componentName="tables" />
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+                    const registryUrl = `${baseUrl}/r/tables.json`
+                    const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
+                    window.open(v0Url, '_blank', 'noopener,noreferrer')
+                  }}
+                  className="flex items-center gap-2"
+                  aria-label="Open in v0"
+                >
+                  <Code className="h-4 w-4" />
+                  <span className="hidden sm:inline">Open in v0</span>
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Open this component in v0 for AI-powered editing</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
         </div>
       </div>
 

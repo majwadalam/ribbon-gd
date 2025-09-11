@@ -28,35 +28,50 @@ registry.items.forEach(item => {
   try {
     // Read the actual file contents
     const files = item.files.map(file => {
-      const filePath = path.join(process.cwd(), file.content);
+      const filePath = path.join(process.cwd(), file.content || file.path);
       const content = fs.readFileSync(filePath, 'utf-8');
       
+      const isPage = item.type === "page";
+      const targetPath = isPage ? `app/${item.name}/page.tsx` : undefined;
+
       return {
-        name: file.name,
-        content: content
+        path: file.content || file.path,
+        content: content,
+        type: isPage ? "registry:page" : "registry:component",
+        target: targetPath
       };
     });
 
+    // Map our custom types to official shadcn types
+    const typeMapping = {
+      "ui": "registry:ui",
+      "page": "registry:block",
+      "component": "registry:component",
+      "lib": "registry:lib",
+      "hook": "registry:hook"
+    };
+
+    const officialType = typeMapping[item.type] || item.type;
+
     // Create the component JSON (v0 compatible format)
+    // v0 doesn't support cssVars, css, or envVars
     const componentData = {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       name: item.name,
-      type: item.type,
-      files: files,
+      type: officialType,
+      title: item.title || item.name.charAt(0).toUpperCase() + item.name.slice(1),
+      description: item.description || `${item.name} component from ${registry.name}`,
       dependencies: item.dependencies || [],
       devDependencies: item.devDependencies || [],
       registryDependencies: item.registryDependencies || [],
-      tailwind: {
-        config: registry.tailwind?.config || {}
+      files: files,
+      tailwind: registry.tailwind || {
+        config: {}
+      },
+      meta: {
+        description: item.description || `${item.name} component from ${registry.name}`,
+        source: `https://ribbon-gd.vercel.app/r/${item.name}.json`
       }
-    };
-    
-    // Only add meta if we have a URL
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL;
-    if (appUrl) {
-      componentData.meta = {
-        description: `${item.name} component from ${registry.name}`,
-        source: `https://${appUrl.replace(/^https?:\/\//, '')}/r/${item.name}.json`
-      };
     }
 
     // Write the component JSON file

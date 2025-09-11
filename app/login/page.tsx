@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
-import { V0Button } from "@/components/v0-button"
-import { Eye, EyeOff, Github, Mail } from "lucide-react"
+import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Eye, EyeOff, Github, Mail, Code, ExternalLink } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -120,10 +120,31 @@ export default function Login() {
         </Card>
 
         <div className="flex justify-center">
-          <V0Button 
-            componentName="login"
-            className="text-xs"
-          />
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+                    const registryUrl = `${baseUrl}/r/login.json`
+                    const v0Url = `https://v0.dev/chat/api/open?url=${encodeURIComponent(registryUrl)}`
+                    window.open(v0Url, '_blank', 'noopener,noreferrer')
+                  }}
+                  className="flex items-center gap-2 text-xs"
+                  aria-label="Open in v0"
+                >
+                  <Code className="h-4 w-4" />
+                  <span className="hidden sm:inline">Open in v0</span>
+                  <ExternalLink className="h-3 w-3" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Open this component in v0 for AI-powered editing</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
