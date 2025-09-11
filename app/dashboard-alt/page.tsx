@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Progress } from "@/components/ui/progress"
-import { useToast } from "@/lib/use-toast"
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -54,24 +53,15 @@ const responseTimeData = [
 ]
 
 export default function DashboardAlt() {
-  const { toast } = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setIsRefreshing(false)
-    toast({
-      title: "Data Refreshed",
-      description: "Alternative dashboard metrics have been updated.",
-    })
   }
 
   const handleQuickAction = (action: string) => {
-    toast({
-      title: `${action} Initiated`,
-      description: `${action} process has been started successfully.`,
-    })
   }
 
   return (

@@ -30,7 +30,6 @@ import {
 } from "@/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import Link from "next/link"
-import { toast } from "@/lib/use-toast"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 
@@ -104,18 +103,9 @@ export function AppSidebar() {
 
   const handleLogout = () => {
     // Simulate logout process
-    toast({
-      title: "Logging out...",
-      description: "You are being securely logged out of your account.",
-    })
     
     // Simulate logout delay
     setTimeout(() => {
-      toast({
-        title: "Logged Out Successfully",
-        description: "You have been securely logged out. Thank you for using Ribbon!",
-      })
-      
       router.push('/login')
       // In a real app, you would redirect to login page or clear auth state
     }, 1000)

@@ -29,14 +29,6 @@ import {
 } from 'lucide-react';
 
 // Type definitions
-interface ToastType {
-  id: string;
-  title: string;
-  description?: string;
-  variant: "default" | "destructive";
-  open: boolean;
-}
-
 interface ProfileData {
   firstName: string;
   lastName: string;
@@ -74,98 +66,9 @@ interface Session {
   device: string;
   location: string;
   active: boolean;
-}
-
-interface UseToastReturn {
-  toasts: ToastType[];
-  toast: (options: { title: string; description?: string; variant?: "default" | "destructive" }) => { id: string; dismiss: () => void };
-  dismiss: (toastId: string) => void;
-}
-
-// Toast Hook
-const useToast = (): UseToastReturn => {
-  const [toasts, setToasts] = useState<ToastType[]>([]);
-
-  const toast = ({ title, description, variant = "default" }: { 
-    title: string; 
-    description?: string; 
-    variant?: "default" | "destructive" 
-  }) => {
-    const id = Date.now().toString();
-    const newToast: ToastType = {
-      id,
-      title,
-      description,
-      variant,
-      open: true
-    };
-
-    setToasts(prev => [...prev, newToast]);
-
-    // Auto dismiss after 3 seconds
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id));
-    }, 3000);
-
-    return {
-      id,
-      dismiss: () => setToasts(prev => prev.filter(t => t.id !== id))
-    };
-  };
-
-  const dismiss = (toastId: string) => {
-    setToasts(prev => prev.filter(t => t.id !== toastId));
-  };
-
-  return { toasts, toast, dismiss };
-};
-
-// Toast Component Props
-interface ToasterProps {
-  toasts: ToastType[];
-  dismiss: (toastId: string) => void;
-}
-
-// Toast Component
-const Toaster: React.FC<ToasterProps> = ({ toasts, dismiss }) => {
-  return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col space-y-2 max-w-sm">
-      {toasts.map((toast) => (
-        <div
-          key={toast.id}
-          className={`flex items-center justify-between space-x-4 overflow-hidden rounded-md border p-4 shadow-lg transition-all animate-in slide-in-from-top-2 ${
-            toast.variant === "destructive"
-              ? "border-red-200 bg-red-50 text-red-900"
-              : "border-green-200 bg-green-50 text-green-900"
-          }`}
-        >
-          <div className="flex items-center space-x-2">
-            {toast.variant === "destructive" ? (
-              <X className="h-4 w-4 text-red-500" />
-            ) : (
-              <Check className="h-4 w-4 text-green-500" />
-            )}
-            <div>
-              {toast.title && <div className="text-sm font-semibold">{toast.title}</div>}
-              {toast.description && <div className="text-sm">{toast.description}</div>}
-            </div>
-          </div>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="h-6 w-6 p-0"
-            onClick={() => dismiss(toast.id)}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      ))}
-    </div>
-  );
 };
 
 const Settings: React.FC = () => {
-  const { toasts, toast, dismiss } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Profile State
@@ -214,11 +117,7 @@ const Settings: React.FC = () => {
   };
 
   const saveProfile = (): void => {
-    toast({
-      title: "Success",
-      description: "Profile updated successfully!",
-      variant: "default"
-    });
+    // Profile updated successfully
   };
 
   // Handle Avatar Upload
@@ -226,11 +125,6 @@ const Settings: React.FC = () => {
     const file = event.target.files?.[0];
     if (file) {
       if (file.size > 1024 * 1024) { // 1MB limit
-        toast({
-          title: "Error",
-          description: "File size must be less than 1MB",
-          variant: "destructive"
-        });
         return;
       }
       
@@ -239,11 +133,6 @@ const Settings: React.FC = () => {
         const result = e.target?.result as string;
         if (result) {
           setProfileData(prev => ({ ...prev, avatar: result }));
-          toast({
-            title: "Success",
-            description: "Avatar uploaded successfully!",
-            variant: "default"
-          });
         }
       };
       reader.readAsDataURL(file);
@@ -253,58 +142,28 @@ const Settings: React.FC = () => {
   // Handle Notification Updates
   const handleNotificationChange = (key: keyof NotificationSettings, value: boolean): void => {
     setNotifications(prev => ({ ...prev, [key]: value }));
-    toast({
-      title: "Success",
-      description: "Notification preferences updated!",
-      variant: "default"
-    });
   };
 
   // Handle Password Update
   const updatePassword = (): void => {
     if (!passwords.current || !passwords.new || !passwords.confirm) {
-      toast({
-        title: "Error",
-        description: "Please fill in all password fields",
-        variant: "destructive"
-      });
       return;
     }
 
     if (passwords.new !== passwords.confirm) {
-      toast({
-        title: "Error",
-        description: "New passwords don't match",
-        variant: "destructive"
-      });
       return;
     }
 
     if (passwords.new.length < 8) {
-      toast({
-        title: "Error",
-        description: "Password must be at least 8 characters",
-        variant: "destructive"
-      });
       return;
     }
 
     setPasswords({ current: '', new: '', confirm: '' });
-    toast({
-      title: "Success",
-      description: "Password updated successfully!",
-      variant: "default"
-    });
   };
 
   // Handle Session Revoke
   const revokeSession = (sessionId: number): void => {
     setSessions(prev => prev.filter(session => session.id !== sessionId));
-    toast({
-      title: "Success",
-      description: "Session revoked successfully!",
-      variant: "default"
-    });
   };
 
   // Handle API Key Actions
@@ -316,20 +175,10 @@ const Settings: React.FC = () => {
       type: 'development'
     };
     setApiKeys(prev => [...prev, newKey]);
-    toast({
-      title: "Success",
-      description: "New API key generated!",
-      variant: "default"
-    });
   };
 
   const deleteApiKey = (keyId: number): void => {
     setApiKeys(prev => prev.filter(key => key.id !== keyId));
-    toast({
-      title: "Success",
-      description: "API key deleted successfully!",
-      variant: "default"
-    });
   };
 
   return (
@@ -662,11 +511,7 @@ const Settings: React.FC = () => {
                     </div>
                     <Button 
                       variant="outline"
-                      onClick={() => toast({
-                        title: "2FA Setup",
-                        description: "Two-factor authentication setup started!",
-                        variant: "default"
-                      })}
+                      onClick={() => {}}
                     >
                       Setup
                     </Button>
@@ -728,21 +573,13 @@ const Settings: React.FC = () => {
                     <div className="flex gap-2">
                       <Button 
                         variant="outline"
-                        onClick={() => toast({
-                          title: "Plan Change",
-                          description: "Plan change initiated!",
-                          variant: "default"
-                        })}
+                        onClick={() => {}}
                       >
                         Change Plan
                       </Button>
                       <Button 
                         variant="outline"
-                        onClick={() => toast({
-                          title: "Cancellation",
-                          description: "Subscription cancellation processed!",
-                          variant: "destructive"
-                        })}
+                        onClick={() => {}}
                       >
                         Cancel
                       </Button>
@@ -774,11 +611,7 @@ const Settings: React.FC = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => toast({
-                          title: "Payment Method",
-                          description: "Payment method edit initiated!",
-                          variant: "default"
-                        })}
+                        onClick={() => {}}
                       >
                         Edit
                       </Button>
@@ -787,11 +620,7 @@ const Settings: React.FC = () => {
                   <Button 
                     variant="outline" 
                     className="w-full"
-                    onClick={() => toast({
-                      title: "Payment Method",
-                      description: "Add payment method initiated!",
-                      variant: "default"
-                    })}
+                    onClick={() => {}}
                   >
                     Add Payment Method
                   </Button>
@@ -849,8 +678,6 @@ const Settings: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
-      
-      <Toaster toasts={toasts} dismiss={dismiss} />
     </>
   );
 };

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { TrendingUp, TrendingDown, Users, CreditCard, Activity, DollarSign, Download, RefreshCw, Code, ExternalLink } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts'
-import { useToast } from "@/lib/use-toast"
 import { useState } from "react"
 
 const revenueData = [
@@ -20,7 +19,6 @@ const revenueData = [
 ]
 
 export default function Dashboard() {
-  const { toast } = useToast()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleRefresh = async () => {
@@ -30,10 +28,6 @@ export default function Dashboard() {
     await new Promise(resolve => setTimeout(resolve, 1500))
     
     setIsRefreshing(false)
-    toast({
-      title: "Dashboard Updated",
-      description: "Latest data has been refreshed successfully.",
-    })
   }
 
   const handleExportData = () => {
@@ -45,11 +39,6 @@ export default function Dashboard() {
     a.href = url
     a.download = 'dashboard-data.csv'
     a.click()
-    
-    toast({
-      title: "Export Successful",
-      description: "Dashboard data has been exported to CSV.",
-    })
   }
 
   return (

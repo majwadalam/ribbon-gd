@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useToast } from "@/lib/use-toast"
 import { ChevronDown, ChevronRight, Search, Download, Filter, Eye, Edit, Trash2, Plus, RefreshCw, Code, ExternalLink } from "lucide-react"
 import { useState } from "react"
 
@@ -230,8 +229,6 @@ export default function Tables() {
     status: "pending"
   })
 
-  const { toast } = useToast()
-
   // Export functionality
   const exportToCSV = (data: any[], filename: string) => {
     const headers = Object.keys(data[0]).filter(key => key !== 'details').join(",")
@@ -252,11 +249,6 @@ export default function Tables() {
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
-    
-    toast({
-      title: "Export Successful",
-      description: `${filename}.csv has been downloaded successfully.`,
-    })
   }
 
   const toggleRow = (id: string) => {
@@ -298,11 +290,6 @@ export default function Tables() {
 
   const handleAddCustomer = () => {
     if (!newCustomer.customer || !newCustomer.email) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in customer name and email.",
-        variant: "destructive"
-      })
       return
     }
 
@@ -323,20 +310,10 @@ export default function Tables() {
     setCustomerData([...customerData, customer])
     setNewCustomer({ customer: "", email: "", phone: "", address: "", status: "active" })
     setCustomerModalOpen(false)
-    
-    toast({
-      title: "Customer Added",
-      description: `${newCustomer.customer} has been added successfully.`,
-    })
   }
 
   const handleAddProduct = () => {
     if (!newProduct.name || !newProduct.price) {
-      toast({
-        title: "Missing Information", 
-        description: "Please fill in product name and price.",
-        variant: "destructive"
-      })
       return
     }
 
@@ -352,20 +329,10 @@ export default function Tables() {
     setProductData([...productData, product])
     setNewProduct({ name: "", category: "", price: "", stock: "", status: "active" })
     setProductModalOpen(false)
-    
-    toast({
-      title: "Product Added",
-      description: `${newProduct.name} has been added to the catalog.`,
-    })
   }
 
   const handleAddOrder = () => {
     if (!newOrder.customer || !newOrder.product || !newOrder.amount) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all order details.",
-        variant: "destructive"
-      })
       return
     }
 
@@ -380,11 +347,6 @@ export default function Tables() {
     setOrderData([...orderData, order])
     setNewOrder({ customer: "", product: "", amount: "", status: "pending" })
     setOrderModalOpen(false)
-    
-    toast({
-      title: "Order Created",
-      description: `Order ${order.id} has been created successfully.`,
-    })
   }
 
   const handleDeleteItem = (id: string, type: string, name: string) => {
@@ -399,22 +361,12 @@ export default function Tables() {
         setOrderData(orderData.filter(item => item.id !== id))
         break
     }
-    
-    toast({
-      title: "Item Deleted",
-      description: `${name} has been removed successfully.`,
-      variant: "destructive"
-    })
   }
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setIsRefreshing(false)
-    toast({
-      title: "Tables Refreshed",
-      description: "All table data has been refreshed.",
-    })
   }
 
   return (
@@ -651,14 +603,14 @@ export default function Tables() {
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              onClick={() => toast({ title: "View Customer", description: `Viewing ${item.customer}` })}
+                              onClick={() => {}}
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
                             <Button 
                               variant="ghost" 
                               size="sm"
-                              onClick={() => toast({ title: "Edit Customer", description: `Edit ${item.customer}` })}
+                              onClick={() => {}}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
@@ -857,14 +809,14 @@ export default function Tables() {
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          onClick={() => toast({ title: "View Product", description: `Viewing ${item.name}` })}
+                          onClick={() => {}}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          onClick={() => toast({ title: "Edit Product", description: `Edit ${item.name}` })}
+                          onClick={() => {}}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -1020,14 +972,14 @@ export default function Tables() {
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          onClick={() => toast({ title: "View Order", description: `Viewing order ${item.id}` })}
+                          onClick={() => {}}
                         >
                           <Eye className="h-4 w-4" />
                         </Button>
                         <Button 
                           variant="ghost" 
                           size="sm"
-                          onClick={() => toast({ title: "Edit Order", description: `Edit order ${item.id}` })}
+                          onClick={() => {}}
                         >
                           <Edit className="h-4 w-4" />
                         </Button>

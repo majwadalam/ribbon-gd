@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Progress } from "@/components/ui/progress"
-import { useToast } from "@/lib/use-toast"
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -140,16 +139,11 @@ export default function AnnualReports() {
   const [selectedYear, setSelectedYear] = useState<string>("2024")
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
   const currentData = annualData[selectedYear]
-  const { toast } = useToast()
 
   const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setIsRefreshing(false)
-    toast({
-      title: "Annual Report Refreshed",
-      description: `${currentData.year} annual report data has been updated.`,
-    })
   }
 
   const exportReport = (): void => {
@@ -172,11 +166,6 @@ export default function AnnualReports() {
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
-    
-    toast({
-      title: "Export Successful",
-      description: `Annual report for ${currentData.year} has been exported.`,
-    })
   }
 
   const exportPDF = (): void => {
@@ -217,11 +206,6 @@ export default function AnnualReports() {
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
-    
-    toast({
-      title: "Report Export Successful",
-      description: `Annual report text file for ${currentData.year} has been downloaded.`,
-    })
   }
 
   const getTrendIcon = (trend: "up" | "down") => {

@@ -24,7 +24,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useToast } from "@/lib/use-toast"
 import { 
   Users, 
   Plus, 
@@ -123,8 +122,6 @@ export default function Team() {
     email: "", 
     role: "viewer"
   })
-  
-  const { toast } = useToast()
 
   const getRoleInfo = (role: string) => {
     return roles.find(r => r.value === role) || roles[2]
@@ -148,11 +145,6 @@ export default function Team() {
 
   const handleInviteMember = () => {
     if (!newMember.name || !newMember.email) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive"
-      })
       return
     }
 
@@ -170,50 +162,28 @@ export default function Team() {
     setTeamMembers([...teamMembers, member])
     setNewMember({ name: "", email: "", role: "viewer" })
     setInviteDialogOpen(false)
-    
-    toast({
-      title: "Invitation Sent",
-      description: `Successfully invited ${newMember.name} to join the team.`,
-    })
   }
 
   const handleRemoveMember = (memberId: string, memberName: string) => {
     setTeamMembers(teamMembers.filter(member => member.id !== memberId))
-    toast({
-      title: "Member Removed",
-      description: `${memberName} has been removed from the team.`,
-    })
   }
 
   const handleChangeRole = (memberId: string, newRole: string, memberName: string) => {
     setTeamMembers(teamMembers.map(member => 
       member.id === memberId ? { ...member, role: newRole } : member
     ))
-    toast({
-      title: "Role Updated",
-      description: `${memberName}'s role has been changed to ${getRoleInfo(newRole).label}.`,
-    })
   }
 
   const handleSuspendUser = (memberId: string, memberName: string) => {
     setTeamMembers(teamMembers.map(member => 
       member.id === memberId ? { ...member, status: "inactive" } : member
     ))
-    toast({
-      title: "User Suspended",
-      description: `${memberName} has been suspended.`,
-      variant: "destructive"
-    })
   }
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setIsRefreshing(false)
-    toast({
-      title: "Team Data Refreshed",
-      description: "Team member information has been updated.",
-    })
   }
 
   const exportTeamData = () => {
@@ -227,11 +197,6 @@ export default function Team() {
     a.href = url
     a.download = 'team-members.csv'
     a.click()
-    
-    toast({
-      title: "Export Successful",
-      description: "Team data has been exported to CSV.",
-    })
   }
 
   // Data for charts
@@ -562,10 +527,6 @@ export default function Team() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem onClick={() => {
-                            toast({
-                              title: "Email Sent",
-                              description: `Email sent to ${member.name}`,
-                            })
                           }}>
                             <Mail className="mr-2 h-4 w-4" />
                             Send Email

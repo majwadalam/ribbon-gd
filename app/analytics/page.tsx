@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tooltip as UITooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { useToast } from "@/lib/use-toast"
 import { TrendingUp, Users, CreditCard, Activity, Calendar, Download, BarChart3, PieChart, LineChart, RefreshCw, Code, ExternalLink } from "lucide-react"
 import { LineChart as RechartsLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import { useState } from "react"
@@ -121,16 +120,11 @@ type ExportFormat = "csv" | "json";
 
 export default function Analytics() {
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const { toast } = useToast()
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
     await new Promise(resolve => setTimeout(resolve, 1500))
     setIsRefreshing(false)
-    toast({
-      title: "Analytics Refreshed",
-      description: "All analytics data has been updated with the latest metrics.",
-    })
   }
 
   const exportAnalytics = (section: ExportSection = "all", format: ExportFormat = "csv") => {
@@ -198,11 +192,6 @@ export default function Analytics() {
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
-    
-    toast({
-      title: "Export Successful",
-      description: `${filename}.csv has been downloaded successfully.`,
-    })
   }
 
   const exportToJSON = (data: any, filename: string) => {
@@ -216,11 +205,6 @@ export default function Analytics() {
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
-    
-    toast({
-      title: "Export Successful",
-      description: `${filename}.json has been downloaded successfully.`,
-    })
   }
 
   return (
